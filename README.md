@@ -1,5 +1,6 @@
 
-<img src="/ASSETS/demo.gif">
+
+# GO LANG NOTES by hiRupamGanguly:-
 
 ## Section 1 : Why use GO Lang as Backend :
 
@@ -9,8 +10,7 @@
 
 
 ## Section 2 : GO Lang Fundamentals:
-<details>
-	<summary> Click here for expanding GO Lang Fundamentals</summary>
+
 	
 ### VARIABLE
 Inside a function, the := short assignment statement can be used in place of a var declaration with implicit type.
@@ -1309,16 +1309,13 @@ delete at 21
 ```
 
 
-</details>
-
 
 
 ##  Section 3 : BACKEND REST API USING GO LANGUAGE: 
 
 ### MonGo And GORILA/MuX driver:-
 
-<details>
-	<summary> Click here for expanding- MonGo And GORILA/MuX driver 65 POINTS to KNOW.</summary>
+
 	
 	
 1. Client -> is a- handle representing a pool of connections to a MongoDB deployment. It is safe for concurrent use by multiple goroutines.
@@ -1488,7 +1485,6 @@ It implements the http.Handler interface, so it can be registered to serve reque
 GetRoute  -> returns a route registered with the given name. This method was renamed to Get() and remains here for backwards compatibility.
 
 	
-</details>
 
 In this whole Note I will try to avoid error handeling as it is so easy that you just replace '_' to err
 then you have to add this if block :

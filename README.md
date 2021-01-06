@@ -1118,7 +1118,7 @@ func main() {
 ### Doubly Linked List
 
 #### IF YOU WANT EXPLANATION THEN PLEASE GO TO MY DataStructures_and_Algorithms REPOSITORY, through this link :- 
-##### https://github.com/rupamgangulydev/DataStructures_and_Algorithms/blob/master/ADS_004_DoublyLinkedList/DoublyLinkedList.java
+##### https://github.com/hirupamganguly/Datastructures-Algorithms-Dynamic-Programming
  ### There you will get  
  
  | ADS_000_DynamicArray    |

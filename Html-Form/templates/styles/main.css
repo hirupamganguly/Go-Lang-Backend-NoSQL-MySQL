@@ -1,0 +1,16 @@
+label{
+    color: darkcyan;
+}
+button{
+    background-color: darkgreen;
+    color: floralwhite;
+    width: 200px;
+    height: 3em;
+    text-align: center;
+    display: inline;
+    font-size: medium;
+}
+textarea {
+    width: 400px;
+    height: 20em;
+    }

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net"
 )
-//hi
+//hi hghghjg
 func handelTCPRequest(conn net.Conn) {
 	mesz, _ := bufio.NewReader(conn).ReadString('\n')
 	fmt.Print("Message received from client: ", string(mesz))

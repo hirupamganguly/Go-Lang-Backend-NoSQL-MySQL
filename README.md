@@ -124,7 +124,7 @@ var result = func(a, b int) int {
 
 func main() {
 	fmt.Println("Factorial of 4", factorial(4)) //Factorial of 4 24
-	defer anotherFunc() //defer keword in GO makes a function execute at the end of the.
+	defer anotherFunc()                         //defer keword in GO makes a function execute at the end of the.
 	// panic execute after defer :) I tell you Go is awesome.
 	// You dont know about panic of goLang? feel free to google. ha ha ha...
 	//execution (or when hits return statement) of parent function from where it is called.
@@ -142,8 +142,26 @@ func main() {
 
 	// a:="start"
 	// defer fmt.Print(a) // start
-	// a="end" 
-	
+	// a="end"
+	fmt.Println("Start")
+	defer fmt.Println("This is defered")
+
+	fmt.Println("End")
+
+	panicker()
+	fmt.Println("DONE the Main")
+	panic("BAD THING HAPPENED")
+	fmt.Println("I am ignored by the panic as recover() is not present for the last panic")
+}
+func panicker() {
+	fmt.Println("About to Panic")
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("ERROR: ", err)
+		}
+	}()
+	panic("BAD THING HAPPEN AGAIN")
+	fmt.Println("DONE PANICKING")
 }
 ```
 #### OUTPUT
@@ -154,7 +172,19 @@ HI I am MAIN and I execute first instead of defer function
 HI I am MAIN and I execute first instead of defer function
 Calling Function as value - Anonymous function 15
 Subtra is caling:  69
-Third	Second	First   I am Another Function
+Start
+End
+About to Panic
+ERROR:  BAD THING HAPPEN AGAIN
+DONE the Main
+This is defered
+Third	Second	First	I am Another Function
+panic: BAD THING HAPPENED
+
+goroutine 1 [running]:
+main.main()
+	/tmp/sandbox739186246/prog.go:48 +0x607
+
 ```
 
 

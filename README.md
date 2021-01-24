@@ -89,6 +89,7 @@ MyLabel:
 	s:="Rupam Ganguly"
 	for index,value:=range s{
 		fmt.Print(index," :- ", string(value)," -> ")
+	} // 0 :- R -> 1 :- u -> 2 :- p -> 3 :- a -> 4 :- m -> 5 :-   -> 6 :- G -> 7 :- a -> 8 :- n -> 9 :- g -> 10 :- u -> 11 :- l -> 12 :- y -> 
  }
 
 ```

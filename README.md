@@ -21,8 +21,10 @@ var i int // // SYNTAX IS CORRECT
 //Here i is the name of the variable. Type of the variable is int. 
 
 package main
-
+var packageLevelScope int =12
+var GlobalLevelScope int =13
 func main() {
+	var blockLevelScope int=15
 	k := 3 
 	m, n, p, q := 1, 34.67, true, "i am string"
 	// Outside a function, every statement begins with a keyword (var, func, and so on)

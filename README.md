@@ -156,6 +156,9 @@ func main() {
 func panicker() {
 	fmt.Println("About to Panic")
 	defer func() {
+
+		// synatax of another kind of if block use here:
+		//  if intialization; condition{ body }
 		if err := recover(); err != nil {
 			fmt.Println("ERROR: ", err)
 		}

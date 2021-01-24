@@ -12,7 +12,7 @@
 ## Section 2 : GO Lang Fundamentals:
 
 	
-### VARIABLE
+### VARIABLE and LOOP 
 Inside a function, the := short assignment statement can be used in place of a var declaration with implicit type.
 
 ~~var int i  // syntax error~~
@@ -21,6 +21,7 @@ var i int // // SYNTAX IS CORRECT
 //Here i is the name of the variable. Type of the variable is int. 
 
 package main
+import "fmt"
 var packageLevelScope int =12 // this variable accessible from the main package
 var GlobalLevelScope int =13 // this variable accessible from anywhere
 func main() {
@@ -35,7 +36,60 @@ func main() {
 	a|b   // 1011 -> 11
 	a^b   // 1001 -> 9
 	a&^b  // 0100 -> 8
-}
+
+	i:=1
+	for ;i<10; {
+		fmt.Print(i)
+		i++
+	}  // 123456789
+	fmt.Println("")
+	fmt.Println(i)// 10
+
+	j:=1
+	for j<6{
+	fmt.Print(j)
+	i++
+	}// 12345
+
+	for k:=0;k<10;k++{
+		if k%2==0{
+			continue
+		}
+		fmt.Print(k)
+	}// 13579
+
+
+	for row:=1; row<=3;row++{
+		for col:=1;col<=3;col++{
+			fmt.Print(row,":",col," -> ")
+			if row*col>=3{
+				break 
+			}
+		}
+	} // 1:1 -> 1:2 -> 1:3 -> 2:1 -> 2:2 -> 3:1 -> 
+
+
+MyLabel:
+	for row:=1; row<=3;row++{
+		for col:=1;col<=3;col++{
+			fmt.Print(row,":",col," -> ")
+			if row*col>=3{
+				break MyLabel
+			}
+		}
+	} // 1:1 -> 1:2 -> 1:3 ->
+
+
+	s:="Rupam Ganguly"
+	for index,value:=range s{
+		fmt.Print(index," :- ", value," -> ")
+	}// 0 :- 82 -> 1 :- 117 -> 2 :- 112 -> 3 :- 97 -> 4 :- 109 -> 5 :-  32 -> 6 :- 71 -> 7 :- 97 -> 8 :- 110 -> 9 :- 103 -> 10 :- 117 -> 11 :- 108 -> 12 :- 121 ->
+
+
+	s:="Rupam Ganguly"
+	for index,value:=range s{
+		fmt.Print(index," :- ", string(value)," -> ")
+ }
 
 ```
 ### FUNCTION
@@ -77,6 +131,13 @@ func main() {
 		return a - b
 	}(89, 20)
 	fmt.Println("Subtra is caling: ", subtra)
+	defer fmt.Print("First	")
+	defer fmt.Print("Second	")
+	defer fmt.Print("Third	")
+
+	// a:="start"
+	// defer fmt.Print(a) // start
+	// a="end"
 }
 ```
 #### OUTPUT
@@ -87,7 +148,7 @@ HI I am MAIN and I execute first instead of defer function
 HI I am MAIN and I execute first instead of defer function
 Calling Function as value - Anonymous function 15
 Subtra is caling:  69
-I am Another Function
+Third	Second	First   I am Another Function
 ```
 
 
@@ -409,7 +470,7 @@ func explain(i interface{}) {
 	default:
 		fmt.Println("Interface has other Type")
 	}
-}
+}  
 func main() {
 	explain("Rupam Ganguly")
 	explain(45.987)
@@ -423,6 +484,8 @@ Interface has other Type
 Interface has a Int
 ```
 ### MIMIC OF INHERITANCE
+
+composition relationship ["has a" relationship]: 
 
 ```go
 // In GO we can use struct for inheritance, we can compose using structs to form other objects
@@ -594,6 +657,14 @@ The default value of uninitialized slice is nil
 Slices does not store the data. It just provides reference to an array
 
 As we change the elements of slice, it will modify corresponding elements of that array
+
+What go does is just create an array of size- Double the previous size of the array when the array is full
+thats how slice achive it's dynamic nature.
+So its efficent to tell the capacity if possible to the slice, when it is initialized, if the array is big enough
+to full your RAM. 
+
+z := make([]int, 12,100) here 12 is length and 100 is the capacity.
+
 ```go
 package main
 

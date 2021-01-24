@@ -245,6 +245,8 @@ func passedasvariable(a int) { // a is copy of c
 	a++ //a is incremented from 7 to 8
 	fmt.Println("a is : ", a)
 }
+
+
 func main() {
 	c := 7
 	fmt.Println("in main function address of c is : ", &c)
@@ -309,6 +311,9 @@ type Employee struct {
 	lastname  string
 	salary    int
 	fulltime  bool
+}
+type myStruct struct{
+	foo int
 }
 
 func main() {
@@ -377,6 +382,11 @@ func main() {
 	fmt.Println(nestedstructMy)             // {Rintu Ganguly 58000 true {new data inserted true}}
 	fmt.Println(nestedstructMy.salary)      // 58000
 	fmt.Println(nestedstructMy.data.string) // new data inserted
+
+	var ms *myStruct
+	ms=new(myStruct) // ms=&myStruct{foo:42}
+	(*ms).foo=42 // ms.foo=42 // derefercencing
+	fmt.Println((*ms).foo) // fmt.Println((*ms).foo)
 }
 ```
 #### OUTPUT

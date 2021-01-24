@@ -21,7 +21,7 @@ var i int // // SYNTAX IS CORRECT
 //Here i is the name of the variable. Type of the variable is int. 
 
 package main
-var packageLevelScope int =12 // this variable acessible from the main package
+var packageLevelScope int =12 // this variable accessible from the main package
 var GlobalLevelScope int =13 // this variable accessible from anywhere
 func main() {
 	var blockLevelScope int=15 // this variable only accessible from main function
@@ -29,6 +29,12 @@ func main() {
 	m, n, p, q := 1, 34.67, true, "i am string"
 	// Outside a function, every statement begins with a keyword (var, func, and so on)
 	// and so the := construct is not available.
+	a:=10 // binary 1010
+	b:=3  // binary 0011
+	a&b   // 0010 -> 2
+	a|b   // 1011 -> 11
+	a^b   // 1001 -> 9
+	a&^b  // 0100 -> 8
 }
 
 ```
@@ -531,6 +537,11 @@ package main
 import "fmt"
 
 func main() {
+	grades:=[...]int64{12,32,11,45}
+	gradesssss:=[11]int64{12,32,11,45}
+	fmt.Println(grades) // [12 32 11 45]
+	fmt.Println(len(grades)) // 4
+	fmt.Println(len(gradesssss)) // 1
 	x := [12]int{1, 2, 3, 4, 5, 6, 7, 8, 9}
 	fmt.Println(x) // [1 2 3 4 5 6 7 8 9 0 0 0]
 	var y [12]int
@@ -548,10 +559,19 @@ func main() {
 	for i := 0; i < len(y); i++ {
 		fmt.Print(y[i]+x[i], " - ") // 1 - 2 - 15 - 4 - 5 - 129 - 7 - 8 - 9 - 0 - 0 - 0 -
 	}
+
+	var matrix [3][4]int
+	matrix[0]=[4]int{1,2,3,4}
+	matrix[1]=[4]int{5,6,7,8}
+	matrix[2]=[4]int{9,10,11,12}
+	fmt.Println(matrix)
 }
 ```
 #### OUTPUT
 ```shell
+[12 32 11 45]
+4
+11
 [1 2 3 4 5 6 7 8 9 0 0 0]
 [0 0 0 0 0 0 0 0 0 0 0 0]
 [0 0 12 0 0 45 0 0 0 0 0 0]
@@ -559,6 +579,9 @@ func main() {
 length of y:  12
 0 - 0 - 12 - 0 - 0 - 123 - 0 - 0 - 0 - 0 - 0 - 0 -
 1 - 2 - 15 - 4 - 5 - 129 - 7 - 8 - 9 - 0 - 0 - 0 - 
+
+[[1 2 3 4] [5 6 7 8] [9 10 11 12]]
+
 ```
 ### SLICE
 

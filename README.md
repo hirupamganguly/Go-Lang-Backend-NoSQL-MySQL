@@ -94,7 +94,9 @@ MyLabel:
 
 ```
 ### FUNCTION
+
 SIGNATURE of FUNCTION:
+
 ```go
 func function_name (argument1 type, argument2 type) (return_type1, return_type2){
 	return a,b
@@ -122,7 +124,9 @@ var result = func(a, b int) int {
 
 func main() {
 	fmt.Println("Factorial of 4", factorial(4)) //Factorial of 4 24
-	defer anotherFunc() //defer keword in GO makes a function execute at the end of the
+	defer anotherFunc() //defer keword in GO makes a function execute at the end of the.
+	// panic execute after defer :) I tell you Go is awesome.
+	// You dont know about panic of goLang? feel free to google. ha ha ha...
 	//execution (or when hits return statement) of parent function from where it is called.
 	fmt.Println("HI I am MAIN and I execute first instead of defer function")
 	fmt.Println("HI I am MAIN and I execute first instead of defer function")
@@ -138,7 +142,8 @@ func main() {
 
 	// a:="start"
 	// defer fmt.Print(a) // start
-	// a="end"
+	// a="end" 
+	
 }
 ```
 #### OUTPUT

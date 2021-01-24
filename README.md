@@ -384,9 +384,9 @@ func main() {
 	fmt.Println(nestedstructMy.data.string) // new data inserted
 
 	var ms *myStruct
-	ms=new(myStruct) // ms=&myStruct{foo:42}
-	(*ms).foo=42 // ms.foo=42 // derefercencing
-	fmt.Println((*ms).foo) // fmt.Println((*ms).foo)
+	ms=new(myStruct) // alternate syntax: ms=&myStruct{foo:42}
+	(*ms).foo=42 // alternate syntax: ms.foo=42 // derefercencing
+	fmt.Println((*ms).foo) // alternate syntax: fmt.Println((*ms).foo)
 }
 ```
 #### OUTPUT
@@ -407,6 +407,7 @@ Rintu
 {Rintu Ganguly 58000 true {new data inserted true}}
 58000
 new data inserted
+42
 ```
 
 ### INTERFACE

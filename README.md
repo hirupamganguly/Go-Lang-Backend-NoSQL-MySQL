@@ -17,7 +17,7 @@
 
 
 
-## Section 1 : Why-use-GO-Lang-as-Backend :
+### Section 1 : Why-use-GO-Lang-as-Backend
 
 |  NodeJs v/s Go | Reddit Post  | Reddit Post  | Valorent's Backend  |
 | :---:   | :-: | :-: | :-: |

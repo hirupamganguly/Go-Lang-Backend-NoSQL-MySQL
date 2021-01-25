@@ -2,18 +2,22 @@
 
 # GO LANG NOTES by hiRupamGanguly:-
 ## INDEX:
+[Why-use-GO-Lang-as-Backend][#Why-use-GO-Lang-as-Backend]
+[VARIABLE-and-LOOP][#VARIABLE-and-LOOP]
+[][]
+[][]
 
-## Section 1 : Why use GO Lang as Backend :
+## Section 1 : Why-use-GO-Lang-as-Backend :
 
 |  NodeJs v/s Go | Reddit Post  | Reddit Post  | Valorent's Backend  |
 | :---:   | :-: | :-: | :-: |
 | <img src="/ASSETS/1.png" width=850> | <img src="/ASSETS/2.png"> | <img src="/ASSETS/3.png"> |  <img src="/ASSETS/4.png"> |
 
 
-## Section 2 : GO Lang Fundamentals:
+## Section 2 : GO-Lang-Fundamentals:
 
 	
-### VARIABLE and LOOP 
+### VARIABLE-and-LOOP 
 Inside a function, the := short assignment statement can be used in place of a var declaration with implicit type.
 
 ~~var int i  // syntax error~~

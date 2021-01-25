@@ -1,6 +1,7 @@
 
 
 # GO LANG NOTES by hiRupamGanguly:-
+## INDEX:
 
 ## Section 1 : Why use GO Lang as Backend :
 

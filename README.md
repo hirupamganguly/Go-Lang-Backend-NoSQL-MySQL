@@ -1,5 +1,7 @@
 
+# Install GO LANG in WSL2 and Setup VsCode, Github
 
+https://www.youtube.com/watch?v=1klNsw_kY2c&t=455s
 # GO LANG NOTES by hiRupamGanguly:-
 ## INDEX:
 

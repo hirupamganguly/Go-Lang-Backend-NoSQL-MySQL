@@ -5,19 +5,15 @@
 
 |        |           |           |
 | ------------- |:-------------:|:-------------:|
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |  
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | 
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
+| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [FUNCTION](#FUNCTION) |  
+| [ComandLine-Argument-Passing](#ComandLine-Argument-Passing) | [POINTER](#POINTER) | [STRUCT](#STRUCT) | 
+| [INTERFACE](#INTERFACE) | [Type-Assertion](#Type-Assertion) | [MIMIC-OF-INHERITANCE](#MIMIC-OF-INHERITANCE) |
+| [Allocation](#Allocation) | [Array](#Array) | [SLICE](#SLICE) |
+| [Deleting-Element-From-Slice](#Deleting-Element-From-Slice) | [MAP](#MAP) | [Why-use-Pointer-in-code](#Why-use-Pointer-in-code-:) |
+| [STACK](#STACK) | [QUEUE](#QUEUE) | [Doubly-Linked-List](#Doubly-Linked-List) |
+| [MonGo-And-GORILA/MuX-driver-theory](#MonGo-And-GORILA/MuX-driver:-) | [Gorilla-Mux-demo:-](#Gorilla-Mux-demo:-) | [HTML-CSS-TEMPLATE-RENDERING:-](#HTML-CSS-TEMPLATE-RENDERING:-) |
+| [Interact-with-Form:](#Interact-with-Form:) | [File-Upload](#File-Upload) | [REST-API-CRUD:-](#REST-API-CRUD:-) |
+| [MySQL-REST-API-CRUD](#MySQL-REST-API-CRUD) | [CLean-Code-Architecture-Rest-API:](#CLean-Code-Architecture-Rest-API:) | [empty](#emptty) |
 
 
 
@@ -211,7 +207,7 @@ main.main()
 
 
 
-### ComandLine Argument Passing
+### ComandLine-Argument-Passing
 ```go
 package main
 
@@ -521,7 +517,7 @@ Implements multiple interfaces
 ```
 
 
-### Type Assertion
+### Type-Assertion
 
 Findout the Type of Dynamic Value of an interface
 
@@ -552,7 +548,7 @@ Interface has a String
 Interface has other Type
 Interface has a Int
 ```
-### MIMIC OF INHERITANCE
+### MIMIC-OF-INHERITANCE
 
 composition relationship ["has a" relationship]: 
 
@@ -824,7 +820,7 @@ INDEX: 0 Value: 34
  INDEX: 3 Value: 9 
  INDEX: 4 Value: 1
 ```
-#### Deleting Element From Slice
+#### Deleting-Element-From-Slice
 ```go
 package main
 
@@ -998,7 +994,7 @@ key:  41  Value:  I am value of key 41
 ```
 
 	
-### Why use Pointer in code-:
+### Why-use-Pointer-in-code-:
 ```go
 package main
 
@@ -1280,7 +1276,7 @@ func main() {
 []
 []
 ```
-### Doubly Linked List
+### Doubly-Linked-List
 
 #### IF YOU WANT EXPLANATION THEN PLEASE GO TO MY DataStructures_and_Algorithms REPOSITORY, through this link :- 
 ##### https://github.com/hirupamganguly/Datastructures-Algorithms-Dynamic-Programming
@@ -1478,7 +1474,7 @@ delete at 21
 
 ##  Section 3 : BACKEND REST API USING GO LANGUAGE: 
 
-### MonGo And GORILA/MuX driver:-
+### MonGo-And-GORILA/MuX-driver:-
 
 
 	
@@ -1664,7 +1660,7 @@ if err != nil
 ```
 This will print the error .
 
-### Gorilla Mux demo:-
+### Gorilla-Mux-demo:-
 ```go
 // Go’s net/http package offers a lot of functionalities for URL routing of the HTTP
 // requests. One thing it doesn’t do very well is dynamic URL routing. Fortunately, we
@@ -1811,7 +1807,7 @@ func main() {
 
 <img src="ASSETS\html-template-rendering.PNG">
 
-### Interact with Form:
+### Interact-with-Form:
 
 <img src="ASSETS/form-structures.PNG">
 
@@ -1974,7 +1970,7 @@ func main() {
 }
 ```
 
-### File Upload
+### File-Upload
 
 index.html
 
@@ -2039,7 +2035,7 @@ func main() {
 ```
 
 
-### REST API CRUD:-
+### REST-API-CRUD:-
 ```go
 package main
 
@@ -2218,7 +2214,7 @@ func main() {
 <img src="ASSETS/mongodb-atlas-create-book.PNG">
 
 
-### MySQL REST API CRUD
+### MySQL-REST-API-CRUD
 
 ```go
 package main
@@ -2319,3 +2315,6 @@ func main() {
 ```
 
 <img src="ASSETS/MysQlCRUDdemoVideo.gif">
+
+
+## CLean-Code-Architecture-Rest-API:

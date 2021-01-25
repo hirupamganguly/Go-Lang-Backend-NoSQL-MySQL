@@ -9,11 +9,11 @@
 | [ComandLine-Argument-Passing](#ComandLine-Argument-Passing) | [POINTER](#POINTER) | [STRUCT](#STRUCT) | 
 | [INTERFACE](#INTERFACE) | [Type-Assertion](#Type-Assertion) | [MIMIC-OF-INHERITANCE](#MIMIC-OF-INHERITANCE) |
 | [Allocation](#Allocation) | [Array](#Array) | [SLICE](#SLICE) |
-| [Deleting-Element-From-Slice](#Deleting-Element-From-Slice) | [MAP](#MAP) | [Why-use-Pointer-in-code](#Why-use-Pointer-in-code-:) |
+| [Deleting-Element-From-Slice](#Deleting-Element-From-Slice) | [MAP](#MAP) | [Why-use-Pointer-in-code](#Why-use-Pointer-in-code) |
 | [STACK](#STACK) | [QUEUE](#QUEUE) | [Doubly-Linked-List](#Doubly-Linked-List) |
-| [MonGo-And-GORILA/MuX-driver-theory](#MonGo-And-GORILA/MuX-driver:-) | [Gorilla-Mux-demo:-](#Gorilla-Mux-demo:-) | [HTML-CSS-TEMPLATE-RENDERING:-](#HTML-CSS-TEMPLATE-RENDERING:-) |
-| [Interact-with-Form:](#Interact-with-Form:) | [File-Upload](#File-Upload) | [REST-API-CRUD:-](#REST-API-CRUD:-) |
-| [MySQL-REST-API-CRUD](#MySQL-REST-API-CRUD) | [CLean-Code-Architecture-Rest-API:](#CLean-Code-Architecture-Rest-API:) | [empty](#emptty) |
+| [MonGo-And-GORILA/MuX-driver-theory](#MonGo-And-GORILA-MuX-driver) | [Gorilla-Mux-demo](#Gorilla-Mux-demo) | [HTML-CSS-TEMPLATE-RENDERING](#HTML-CSS-TEMPLATE-RENDERING) |
+| [Interact-with-Form](#Interact-with-Form) | [File-Upload](#File-Upload) | [REST-API-CRUD](#REST-API-CRUD) |
+| [MySQL-REST-API-CRUD](#MySQL-REST-API-CRUD) | [CLean-Code-Architecture-Rest-API:](#CLean-Code-Architecture-Rest-API) | [empty](#emptty) |
 
 
 
@@ -994,7 +994,7 @@ key:  41  Value:  I am value of key 41
 ```
 
 	
-### Why-use-Pointer-in-code-:
+### Why-use-Pointer-in-code
 ```go
 package main
 
@@ -1474,7 +1474,7 @@ delete at 21
 
 ##  Section 3 : BACKEND REST API USING GO LANGUAGE: 
 
-### MonGo-And-GORILA/MuX-driver:-
+### MonGo-And-GORILA-MuX-driver
 
 
 	
@@ -1660,7 +1660,7 @@ if err != nil
 ```
 This will print the error .
 
-### Gorilla-Mux-demo:-
+### Gorilla-Mux-demo
 ```go
 // Go’s net/http package offers a lot of functionalities for URL routing of the HTTP
 // requests. One thing it doesn’t do very well is dynamic URL routing. Fortunately, we
@@ -1709,7 +1709,7 @@ func main() {
 	http.ListenAndServe("localhost:8080", router)
 }
 ```
-### HTML-CSS-TEMPLATE-RENDERING:-
+### HTML-CSS-TEMPLATE-RENDERING
 HTML -
 
 ```html
@@ -1807,7 +1807,7 @@ func main() {
 
 <img src="ASSETS\html-template-rendering.PNG">
 
-### Interact-with-Form:
+### Interact-with-Form
 
 <img src="ASSETS/form-structures.PNG">
 
@@ -2035,7 +2035,7 @@ func main() {
 ```
 
 
-### REST-API-CRUD:-
+### REST-API-CRUD
 ```go
 package main
 
@@ -2317,4 +2317,4 @@ func main() {
 <img src="ASSETS/MysQlCRUDdemoVideo.gif">
 
 
-## CLean-Code-Architecture-Rest-API:
+## CLean-Code-Architecture-Rest-API

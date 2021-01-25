@@ -5,15 +5,15 @@
 
 |        |           |           |
 | ------------- |:-------------:|:-------------:|
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [FUNCTION](#FUNCTION) |  
-| [ComandLine-Argument-Passing](#ComandLine-Argument-Passing) | [POINTER](#POINTER) | [STRUCT](#STRUCT) | 
-| [INTERFACE](#INTERFACE) | [Type-Assertion](#Type-Assertion) | [MIMIC-OF-INHERITANCE](#MIMIC-OF-INHERITANCE) |
+| [Why GoLang as Backend?](#Why-use-GO-Lang-as-Backend) | [Variabl and Loops](#VARIABLE-and-LOOP) | [FUNCTION](#FUNCTION) |  
+| [Command line arguments passing](#ComandLine-Argument-Passing) | [Pointer](#POINTER) | [Structure or Class](#STRUCT) | 
+| [Interface](#INTERFACE) | [Type-Assertion](#Type-Assertion) | [Mimic of Inheritance](#MIMIC-OF-INHERITANCE) |
 | [Allocation](#Allocation) | [Array](#Array) | [SLICE](#SLICE) |
-| [Deleting-Element-From-Slice](#Deleting-Element-From-Slice) | [MAP](#MAP) | [Why-use-Pointer-in-code](#Why-use-Pointer-in-code) |
+| [How to delete item from Slice](#Deleting-Element-From-Slice) | [MAP](#MAP) | [Why use POINTER in code](#Why-use-Pointer-in-code) |
 | [STACK](#STACK) | [QUEUE](#QUEUE) | [Doubly-Linked-List](#Doubly-Linked-List) |
-| [MonGo-And-GORILA/MuX-driver-theory](#MonGo-And-GORILA-MuX-driver) | [Gorilla-Mux-demo](#Gorilla-Mux-demo) | [HTML-CSS-TEMPLATE-RENDERING](#HTML-CSS-TEMPLATE-RENDERING) |
-| [Interact-with-Form](#Interact-with-Form) | [File-Upload](#File-Upload) | [MongoDB-REST-API-CRUD](#REST-API-CRUD) |
-| [MySQL-REST-API-CRUD](#MySQL-REST-API-CRUD) | [CLean-Code-Architecture-MongoDB-Rest-API:](#CLean-Code-Architecture-Rest-API) | [empty](#emptty) |
+| [Some useful theory about Mongo and Mux Driver](#MonGo-And-GORILA-MuX-driver) | [Basic Gorila Mux project](#Gorilla-Mux-demo) | [Html Css Rendering wiyh GO Lang](#HTML-CSS-TEMPLATE-RENDERING) |
+| [Interaction with Form Html](#Interact-with-Form) | [File-Upload Html Interaction](#File-Upload) | [MongoDB REST API CRUD](#REST-API-CRUD) |
+| [MySQL REST API CRUD](#MySQL-REST-API-CRUD) | [CLean Code Architecture MongoDB-Rest-API:](#CLean-Code-Architecture-Rest-API) | [empty](#emptty) |
 
 
 

@@ -3,21 +3,21 @@
 # GO LANG NOTES by hiRupamGanguly:-
 ## INDEX:
 
-|        |           |
-| ------------- |:-------------:|
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |[VARIABLE-and-LOOP](#VARIABLE-and-LOOP)  
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |[VARIABLE-and-LOOP](#VARIABLE-and-LOOP) 
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |[VARIABLE-and-LOOP](#VARIABLE-and-LOOP)
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |[VARIABLE-and-LOOP](#VARIABLE-and-LOOP)
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |[VARIABLE-and-LOOP](#VARIABLE-and-LOOP)
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |[VARIABLE-and-LOOP](#VARIABLE-and-LOOP)
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |[VARIABLE-and-LOOP](#VARIABLE-and-LOOP)
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |[VARIABLE-and-LOOP](#VARIABLE-and-LOOP)
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |[VARIABLE-and-LOOP](#VARIABLE-and-LOOP)
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |[VARIABLE-and-LOOP](#VARIABLE-and-LOOP)
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |[VARIABLE-and-LOOP](#VARIABLE-and-LOOP)
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |[VARIABLE-and-LOOP](#VARIABLE-and-LOOP)
-| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |[VARIABLE-and-LOOP](#VARIABLE-and-LOOP)
+|        |           |           |
+| ------------- |:-------------:|:-------------:|
+| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |  
+| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | 
+| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
+| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
+| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
+| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
+| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
+| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
+| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
+| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
+| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
+| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
+| [Why-use-GO-Lang-as-Backend](#Why-use-GO-Lang-as-Backend) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) | [VARIABLE-and-LOOP](#VARIABLE-and-LOOP) |
 
 
 

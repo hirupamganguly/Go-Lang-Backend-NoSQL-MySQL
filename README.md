@@ -2325,7 +2325,8 @@ func main() {
 
 
 ## CONCURENCY
-
+<details>
+  <summary>Click to expand!</summary>
 
 ```go
 package main
@@ -2885,3 +2886,7 @@ finished
 
 
 ```
+
+
+
+</details>

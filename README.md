@@ -2321,3 +2321,592 @@ func main() {
 
 
 ## CLean-Code-Architecture-Rest-API
+
+
+
+## CONCURENCY
+
+|         |            |   |
+| ------------- |:-------------:| -----:|
+| ```go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	fmt.Println("I am Main Thread")
+	counterMessage("First")
+	counterMessage("Second")
+}
+
+func counterMessage(msz string) {
+	for i := 0; i < 7; i++ {
+		fmt.Println(i, " ", msz, " -> ")
+
+	}
+}
+```
+
+### OUTPUT
+```shell
+I am Main Thread
+0   First  -> 
+1   First  -> 
+2   First  -> 
+3   First  -> 
+4   First  -> 
+5   First  -> 
+6   First  -> 
+0   Second  -> 
+1   Second  -> 
+2   Second  -> 
+3   Second  -> 
+4   Second  -> 
+5   Second  -> 
+6   Second  -> 
+```
+      | ```go
+
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	fmt.Println("I am Main Thread")
+	go counterMessage("First")
+	counterMessage("Second")
+}
+
+func counterMessage(msz string) {
+	for i := 0; i < 7; i++ {
+		fmt.Println(i, " ", msz, " -> ")
+	}
+}
+```
+### OUTPUT
+
+```shell
+I am Main Thread
+0   Second  -> 
+1   Second  -> 
+2   Second  -> 
+3   Second  -> 
+4   Second  -> 
+5   Second  -> 
+6   Second  -> 
+``` | ```go
+
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	fmt.Println("I am Main Thread")
+	go counterMessage("First")
+	counterMessage("Second")
+}
+
+func counterMessage(msz string) {
+	for i := 0; i < 7; i++ {
+		fmt.Println(i, " ", msz, " -> ")
+		time.Sleep(1 * time.Second)
+	}
+}
+```
+### OUTPUT
+```shell
+I am Main Thread
+0   Second  -> 
+0   First  -> 
+1   First  -> 
+1   Second  -> 
+2   Second  -> 
+2   First  -> 
+3   First  -> 
+3   Second  -> 
+4   First  -> 
+4   Second  -> 
+5   First  -> 
+5   Second  -> 
+6   Second  -> 
+6   First  -> 
+```
+ |
+| ```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+var waitGroupVar = sync.WaitGroup{}
+
+func main() {
+	waitGroupVar.Add(1)
+	fmt.Println("I am Main Thread")
+	go counterMessage("First")
+	waitGroupVar.Wait()
+	counterMessage("Second")
+	fmt.Println("finished")
+}
+
+func counterMessage(msz string) {
+	for i := 0; i < 7; i++ {
+		fmt.Println(i, " ", msz, " -> ")
+	}
+	waitGroupVar.Done()
+}
+
+```
+### OUTPUT
+```shell
+I am Main Thread
+0   First  -> 
+1   First  -> 
+2   First  -> 
+3   First  -> 
+4   First  -> 
+5   First  -> 
+6   First  -> 
+0   Second  -> 
+1   Second  -> 
+2   Second  -> 
+3   Second  -> 
+4   Second  -> 
+5   Second  -> 
+6   Second  -> 
+panic: sync: negative WaitGroup counter
+
+goroutine 1 [running]:
+sync.(*WaitGroup).Add(0x5844a8, 0xffffffffffffffff)
+        /usr/local/go/src/sync/waitgroup.go:74 +0x147
+sync.(*WaitGroup).Done(...)
+        /usr/local/go/src/sync/waitgroup.go:99
+main.counterMessage(0x4bd0c1, 0x6)
+        /home/rupam/github-myrepo/Go-Lang-Backend-NoSQL-MySQL/concurency/concurencyingo.go:23 +0x145
+main.main()
+        /home/rupam/github-myrepo/Go-Lang-Backend-NoSQL-MySQL/concurency/concurencyingo.go:15 +0xe8
+exit status 2
+
+```      | 
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+var waitGroupVar = sync.WaitGroup{}
+
+func main() {
+	waitGroupVar.Add(1)
+	fmt.Println("I am Main Thread")
+	go counterMessage("First")
+	waitGroupVar.Wait()
+	fmt.Println("finished")
+}
+
+func counterMessage(msz string) {
+	for i := 0; i < 7; i++ {
+		fmt.Println(i, " ", msz, " -> ")
+	}
+	waitGroupVar.Done()
+}
+
+```
+### OUTPUT
+```shell
+I am Main Thread
+0   First  -> 
+1   First  -> 
+2   First  -> 
+3   First  -> 
+4   First  -> 
+5   First  -> 
+6   First  -> 
+finished
+
+```
+ | 
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+var waitGroupVar = sync.WaitGroup{}
+
+func main() {
+	waitGroupVar.Add(2)
+	fmt.Println("I am Main Thread")
+	go counterMessage("First")
+
+	fmt.Println("finished")
+	go counterMessage("Second")
+	waitGroupVar.Wait()
+}
+
+func counterMessage(msz string) {
+	for i := 0; i < 7; i++ {
+		fmt.Println(i, " ", msz, " -> ")
+	}
+	waitGroupVar.Done()
+}
+
+```
+### OUTPUT
+```shell
+I am Main Thread
+finished
+0   Second  -> 
+1   Second  -> 
+2   Second  -> 
+3   Second  -> 
+4   Second  -> 
+5   Second  -> 
+6   Second  -> 
+0   First  -> 
+1   First  -> 
+2   First  -> 
+3   First  -> 
+4   First  -> 
+5   First  -> 
+6   First  -> 
+
+```
+ |
+| 
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+var waitGroupVar = sync.WaitGroup{}
+
+func main() {
+	waitGroupVar.Add(3)
+	fmt.Println("I am Main Thread")
+	go counterMessage("First")
+
+	fmt.Println("finished")
+	go counterMessage("Second")
+	go counterMessage("Third")
+	waitGroupVar.Wait()
+}
+
+func counterMessage(msz string) {
+	for i := 0; i < 7; i++ {
+		fmt.Println(i, " ", msz, " -> ")
+	}
+	waitGroupVar.Done()
+}
+
+```
+### OUTPUT
+```shell
+I am Main Thread
+finished
+0   Third  -> 
+1   Third  -> 
+2   Third  -> 
+0   Second  -> 
+3   Third  -> 
+1   Second  -> 
+2   Second  -> 
+3   Second  -> 
+4   Second  -> 
+5   Second  -> 
+6   Second  -> 
+4   Third  -> 
+5   Third  -> 
+6   Third  -> 
+0   First  -> 
+1   First  -> 
+2   First  -> 
+3   First  -> 
+4   First  -> 
+5   First  -> 
+6   First  -> 
+
+```
+      | 
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+var waitGroupVar = sync.WaitGroup{}
+
+func main() {
+	waitGroupVar.Add(4)
+	fmt.Println("I am Main Thread")
+	go counterMessage("First")
+
+	fmt.Println("finished")
+	go counterMessage("Second")
+	go counterMessage("Third")
+	go counterMessage("Foyrth")
+	justrMessage()
+	waitGroupVar.Wait()
+}
+
+func counterMessage(msz string) {
+	for i := 0; i < 7; i++ {
+		fmt.Println(i, " ", msz, " -> ")
+	}
+	waitGroupVar.Done()
+}
+
+func justrMessage() {
+	for i := 0; i < 7; i++ {
+		fmt.Println(i, " ", "just message", " -> ")
+	}
+	waitGroupVar.Done()
+}
+
+```
+### OUTPUT
+```shell
+I am Main Thread
+finished
+0   just message  -> 
+1   just message  -> 
+2   just message  -> 
+3   just message  -> 
+4   just message  -> 
+5   just message  -> 
+6   just message  -> 
+0   Foyrth  -> 
+1   Foyrth  -> 
+2   Foyrth  -> 
+3   Foyrth  -> 
+4   Foyrth  -> 
+5   Foyrth  -> 
+6   Foyrth  -> 
+0   Second  -> 
+1   Second  -> 
+2   Second  -> 
+3   Second  -> 
+4   Second  -> 
+5   Second  -> 
+6   Second  -> 
+0   Third  -> 
+1   Third  -> 
+2   Third  -> 
+3   Third  -> 
+4   Third  -> 
+5   Third  -> 
+6   Third  -> 
+
+```
+ | 
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+var waitGroupVar = sync.WaitGroup{}
+
+func main() {
+	waitGroupVar.Add(4)
+	fmt.Println("I am Main Thread")
+	go counterMessage("First")
+
+	fmt.Println("finished")
+	go counterMessage("Second")
+	go counterMessage("Third")
+	go justrMessage()
+	go counterMessage("Foyrth")
+
+	waitGroupVar.Wait()
+}
+
+func counterMessage(msz string) {
+	for i := 0; i < 7; i++ {
+		fmt.Println(i, " ", msz, " -> ")
+	}
+	waitGroupVar.Done()
+}
+
+func justrMessage() {
+	for i := 0; i < 7; i++ {
+		fmt.Println(i, " ", "just message", " -> ")
+	}
+	waitGroupVar.Done()
+}
+
+```
+### OUTPUT
+```shell
+I am Main Thread
+finished
+0   Foyrth  -> 
+1   Foyrth  -> 
+2   Foyrth  -> 
+3   Foyrth  -> 
+4   Foyrth  -> 
+5   Foyrth  -> 
+6   Foyrth  -> 
+0   First  -> 
+1   First  -> 
+2   First  -> 
+3   First  -> 
+4   First  -> 
+5   First  -> 
+6   First  -> 
+0   just message  -> 
+1   just message  -> 
+2   just message  -> 
+3   just message  -> 
+4   just message  -> 
+5   just message  -> 
+6   just message  -> 
+0   Third  -> 
+1   Third  -> 
+2   Third  -> 
+3   Third  -> 
+4   Third  -> 
+5   Third  -> 
+6   Third  -> 
+
+```
+ |
+| ```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+var waitGroupVar = sync.WaitGroup{}
+
+func main() {
+	waitGroupVar.Add(5)
+	fmt.Println("I am Main Thread")
+	go counterMessage("First")
+
+	fmt.Println("finished")
+	go counterMessage("Second")
+	go counterMessage("Third")
+	go justrMessage()
+	go counterMessage("Foyrth")
+
+	waitGroupVar.Wait()
+}
+
+func counterMessage(msz string) {
+	for i := 0; i < 7; i++ {
+		fmt.Println(i, " ", msz, " -> ")
+	}
+	waitGroupVar.Done()
+}
+
+func justrMessage() {
+	for i := 0; i < 7; i++ {
+		fmt.Println(i, " ", "just message", " -> ")
+	}
+	waitGroupVar.Done()
+}
+
+```
+### OUTPUT
+```shell
+I am Main Thread
+finished
+0   Foyrth  -> 
+1   Foyrth  -> 
+2   Foyrth  -> 
+3   Foyrth  -> 
+4   Foyrth  -> 
+5   Foyrth  -> 
+6   Foyrth  -> 
+0   First  -> 
+1   First  -> 
+2   First  -> 
+3   First  -> 
+4   First  -> 
+5   First  -> 
+6   First  -> 
+0   just message  -> 
+1   just message  -> 
+2   just message  -> 
+3   just message  -> 
+4   just message  -> 
+5   just message  -> 
+6   just message  -> 
+0   Third  -> 
+1   Third  -> 
+2   Third  -> 
+3   Third  -> 
+4   Third  -> 
+5   Third  -> 
+6   Third  -> 
+0   Second  -> 
+1   Second  -> 
+2   Second  -> 
+3   Second  -> 
+4   Second  -> 
+5   Second  -> 
+6   Second  -> 
+
+```      | col2 | col3 |
+| col1      | col2 | col3 |
+| col1      | col2 | col3 |
+| col1      | col2 | col3 |
+| col1      | col2 | col3 |
+| col1      | col2 | col3 |
+| col1      | col2 | col3 |
+| col1      | col2 | col3 |
+| col1      | col2 | col3 |
+| col1      | col2 | col3 |
+| col1      | col2 | col3 |
+| col1      | col2 | col3 |
+| col1      | col2 | col3 |
+| col1      | col2 | col3 |
+| col1      | col2 | col3 |
+
+
+
+
+
+
+
+
+```go
+
+```
+### OUTPUT
+```shell
+
+
+
+
+```go
+
+```
+### OUTPUT
+```shell
+
+
+```

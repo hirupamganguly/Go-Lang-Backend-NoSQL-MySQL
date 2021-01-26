@@ -2326,9 +2326,8 @@ func main() {
 
 ## CONCURENCY
 
-|         |            |   |
-| ------------- |:-------------:| -----:|
-| ```go
+
+```go
 package main
 
 import (
@@ -2367,7 +2366,8 @@ I am Main Thread
 5   Second  -> 
 6   Second  -> 
 ```
-      | ```go
+
+```go
 
 package main
 
@@ -2398,7 +2398,8 @@ I am Main Thread
 4   Second  -> 
 5   Second  -> 
 6   Second  -> 
-``` | ```go
+```
+```go
 
 package main
 
@@ -2438,8 +2439,9 @@ I am Main Thread
 6   Second  -> 
 6   First  -> 
 ```
- |
-| ```go
+
+
+```go
 package main
 
 import (
@@ -2496,7 +2498,7 @@ main.main()
         /home/rupam/github-myrepo/Go-Lang-Backend-NoSQL-MySQL/concurency/concurencyingo.go:15 +0xe8
 exit status 2
 
-```      | 
+```
 ```go
 package main
 
@@ -2536,7 +2538,6 @@ I am Main Thread
 finished
 
 ```
- | 
 ```go
 package main
 
@@ -2585,8 +2586,6 @@ finished
 6   First  -> 
 
 ```
- |
-| 
 ```go
 package main
 
@@ -2643,7 +2642,6 @@ finished
 6   First  -> 
 
 ```
-      | 
 ```go
 package main
 
@@ -2716,7 +2714,6 @@ finished
 6   Third  -> 
 
 ```
- | 
 ```go
 package main
 
@@ -2790,8 +2787,7 @@ finished
 6   Third  -> 
 
 ```
- |
-| ```go
+```go
 package main
 
 import (
@@ -2870,28 +2866,7 @@ finished
 5   Second  -> 
 6   Second  -> 
 
-```      | col2 | col3 |
-| col1      | col2 | col3 |
-| col1      | col2 | col3 |
-| col1      | col2 | col3 |
-| col1      | col2 | col3 |
-| col1      | col2 | col3 |
-| col1      | col2 | col3 |
-| col1      | col2 | col3 |
-| col1      | col2 | col3 |
-| col1      | col2 | col3 |
-| col1      | col2 | col3 |
-| col1      | col2 | col3 |
-| col1      | col2 | col3 |
-| col1      | col2 | col3 |
-| col1      | col2 | col3 |
-
-
-
-
-
-
-
+```
 
 ```go
 

@@ -2326,6 +2326,15 @@ func main() {
 
 ## CONCURENCY
 
+thread	goroutine
+OS threads are managed by kernal and has hardware dependencies.	goroutines are managed by go runtime and has no hardware dependencies.
+OS threads generally have fixed stack size of 1-2MB	goroutines typically have 8KB (2KB since Go 1.4) of stack size in newer versions of go
+Stack size is determined during compile time and can not grow	Stack size of go is managed in run-time and can grow up to 1GB which is possible by allocating and freeing heap storage
+There is no easy communication medium between threads. There is huge latency between inter-thread communication.	goroutine use channels to communicate with other goroutines with low latency (read more).
+Threads have identity. There is TID which identifies each thread in a process.	goroutine do not have any identity. go implemented this because go does not have TLS(Thread Local Storage).
+Threads have significant setup and teardown cost as a thread has to request lots of resources from OS and return once it's done.	goroutines are created and destoryed by the go's runtime. These operations are very cheap compared to threads as go runtime already maintain pool of threads for goroutines. In this case OS is not aware of goroutines.
+Threads are preemptively scheduled (read here). Switching cost between threads is high as scheduler needs to save/restore more than 50 registers and states. This can be quite significant when there is rapid switching between threads.	goroutines are coopertively scheduled (read more). When a goroutine switch occurs, only 3 registers need to be saved or restored.
+
 <details>
   <summary>Click to expand!</summary>
 
@@ -2871,13 +2880,255 @@ finished
 ```
 
 ```go
+package main
+
+import "fmt"
+
+var sharedResource = 0
+
+func main() {
+	for i := 0; i < 6; i++ {
+		funcone()
+		increment()
+	}
+}
+
+func funcone() {
+	fmt.Println("say ", sharedResource)
+}
+
+func increment() {
+	sharedResource++
+}
 
 ```
 ### OUTPUT
 ```shell
 
+say  0
+say  1
+say  2
+say  3
+say  4
+say  5
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+var waitGroupVar = sync.WaitGroup{}
+var sharedResource = 0
+
+func main() {
+
+	for i := 0; i < 6; i++ {
+		waitGroupVar.Add(2)
+		go funcone()
+		go increment()
+
+	}
+	waitGroupVar.Wait()
+}
+
+func funcone() {
+	fmt.Println("say ", sharedResource)
+	waitGroupVar.Done()
+}
+
+func increment() {
+	sharedResource++
+	waitGroupVar.Done()
+}
+
+```
+### OUTPUT
+```shell
+say  1
+say  1
+say  4
+say  5
+say  4
+say  6
+
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+var waitGroupVar = sync.WaitGroup{}
+var mutexlocking = sync.RWMutex{}
+
+var sharedResource = 0
+
+func main() {
+
+	for i := 0; i < 6; i++ {
+		waitGroupVar.Add(2)
+		go funcone()
+		go increment()
+
+	}
+	waitGroupVar.Wait()
+}
+
+func funcone() {
+	mutexlocking.RLock()
+	fmt.Println("say ", sharedResource)
+	mutexlocking.RUnlock()
+	waitGroupVar.Done()
+}
+
+func increment() {
+	mutexlocking.Lock()
+	sharedResource++
+	mutexlocking.Unlock()
+	waitGroupVar.Done()
+}
+
+```
+### OUTPUT
+```shell
+say  1
+say  1
+say  2
+say  3
+say  3
+say  4
+
+```
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+var waitGroupVar = sync.WaitGroup{}
+var mutexlocking = sync.RWMutex{}
+
+var sharedResource = 0
+
+func main() {
+
+	for i := 0; i < 6; i++ {
+		waitGroupVar.Add(2)
+
+		mutexlocking.RLock()
+		go reader()
+
+		mutexlocking.Lock()
+		go writer()
+
+	}
+
+	waitGroupVar.Wait()
+
+}
+
+func reader() {
+
+	fmt.Println("say ", sharedResource)
+	mutexlocking.RUnlock()
+	waitGroupVar.Done()
+}
+
+func writer() {
+	sharedResource++
+	mutexlocking.Unlock()
+	waitGroupVar.Done()
+}
 
 
+```
+### OUTPUT
+```shell
+say  0
+say  1
+say  2
+say  3
+say  4
+say  5
+
+```
+
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+var waitGroupVar = sync.WaitGroup{}
+var mutexlocking = sync.RWMutex{}
+
+var sharedResource = 0
+
+func main() {
+	waitGroupVar.Add(2)
+	go morejobs()
+	go morejobs()
+	for i := 0; i < 6; i++ {
+		waitGroupVar.Add(2)
+		mutexlocking.RLock()
+		go reader()
+
+		mutexlocking.Lock()
+
+		go writer()
+
+	}
+
+	waitGroupVar.Wait()
+
+}
+func morejobs() {
+	s := "Rupam Ganguly"
+	for index, value := range s {
+		fmt.Print(index, " :- ", string(value), " -> ")
+		time.Sleep(1 * time.Second)
+	}
+	fmt.Println("")
+	waitGroupVar.Done()
+}
+func reader() {
+
+	fmt.Println("say ", sharedResource)
+	mutexlocking.RUnlock()
+	waitGroupVar.Done()
+}
+
+func writer() {
+	sharedResource++
+	mutexlocking.Unlock()
+	waitGroupVar.Done()
+}
+
+```
+### OUTPUT
+```shell
+say  0
+0 :- R -> 0 :- R -> say  1
+say  2
+say  3
+say  4
+say  5
+1 :- u -> 1 :- u -> 2 :- p -> 2 :- p -> 3 :- a -> 3 :- a -> 4 :- m -> 4 :- m -> 5 :-   -> 5 :-   -> 6 :- G -> 6 :- G -> 7 :- a -> 7 :- a -> 8 :- n -> 8 :- n -> 9 :- g -> 9 :- g -> 10 :- u -> 10 :- u -> 11 :- l -> 11 :- l -> 12 :- y -> 12 :- y -> 
+
+```
 
 ```go
 

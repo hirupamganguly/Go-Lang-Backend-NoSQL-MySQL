@@ -41,7 +41,7 @@ var i int // // SYNTAX IS CORRECT
 package main
 import "fmt"
 var packageLevelScope int =12 // this variable accessible from the main package
-var GlobalLevelScope int =13 // this variable accessible from anywhere
+var GlobalLevelScope int =13 // this variable accessible from any packages
 func main() {
 	var blockLevelScope int=15 // this variable only accessible from main function
 	k := 3 

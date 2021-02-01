@@ -161,13 +161,20 @@ func function_name (argument1 type, argument2 type) (return_type1, return_type2)
 	return argument1,argument2
 }
 ```
+A method is nothing but a function, but it belongs to a certain type. A method is defined with slightly different syntax than a normal function. It required an additional parameter known as a receiver which is a type to which the function belongs. This way, a method (function) can access the properties of the receiver it belongs to (like fields of a struct).
+
+When a method belongs to a type, its receiver receives a copy of the object on which it was called. 
+
 ```go
-func (rec recieverStruct)function_name (argument1 type, argument2 type) (return_type1, return_type2){
+func (recieveCopy type)function_name (argument1 type, argument2 type) (return_type1, return_type2){
 	return argument1,argument2
 }
 ```
+A method can also belong to the pointer of a type. When a method belongs to the pointer of a type, its receiver will receive the pointer to the object instead of a copy of the object.
+If a method has a pointer receiver, then you don’t necessarily need to use the pointer dereferencing syntax (*e) to get the value of the receiver. 
+
 ```go
-func (rec *recieverStruct)function_name (argument1 type, argument2 type) (return_type1, return_type2){
+func (recieveReference *type)function_name (argument1 type, argument2 type) (return_type1, return_type2){
 	return argument1,argument2
 }
 ```
@@ -280,9 +287,511 @@ main.main()
 	/tmp/sandbox739186246/prog.go:48 +0x607
 
 ```
+## Struct-Class-of-GoLang
+
+A structure has different fields of the same or different data types.  Like a class, we can create an object from this Struct 
+```go
+type StructName struct {
+    field1 fieldType1
+    field2 fieldType2
+}
+```
+
+In the above syntax, StructName is a struct type while field1 and field2 are fields of data type fieldType1 and fieldType2 respectively. 
+
+Struct gives one more ability to add meta-data to its fields. Usually, it is used to provide transformation information on how a struct field is encoded to or decoded from another format (or stored/retrieved from a database), but you can use it to store whatever meta-info you want to, either intended for another package or for your own use.
+```go
+	type Employee struct {
+	firstName string `json:"firstName"`
+	lastName  string `json:"lastName"`
+	salary    int    `json: "salary"`
+	fullTime  int    `json: "fullTime"`
+	```
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+// Anonymous fields
+// You can define a struct type without declaring any field names. You have to just define the field data types and Go will use the data type declarations (keywords) as the field names.
+
+type DataStruct struct {
+	string
+	bool
+}
+type Employee struct {
+	firstname string
+	lastname  string
+	salary    int
+	fulltime  bool
+}
+type myStruct struct{
+	foo int
+}
+
+func main() {
+	// Now that we have a struct type Employee, let’s create a struct ross from it. 
+	var ross Employee
+	fmt.Println(ross) // {"" 0 false}
+	// The zero value of a struct is a struct with all fields set to their own zero values.
+	// Hence string will have zero value of ""(can’t be printed), int will have zero value of 0 and bool will have zero value of false.
+
+	// Initialized fields of a struct
+	ross.firstname = "Rupam"
+	ross.lastname = "Ganguly"
+	ross.salary = 45000
+	ross.fulltime = true
+	fmt.Println(ross) // {Rupam Ganguly 45000 true}
+
+	// Another way to initialized fields of a struct
+	bos := Employee{
+		firstname: "Rintu",
+		lastname:  "Ganguly",
+		salary:    58000,
+		fulltime:  true,
+		// The comma (,) is absolutely necessary after the value assignment of the last field while creating a struct using the above syntax.
+		// This way, Go won’t add a semicolon just after the last field while compiling the code.
+	}
+	fmt.Println(bos) // {Rintu Ganguly 58000 true}
+
+	// Another way to initialized fields of a struct
+	mos := Employee{"my mosh", "ganguly", 90000, true}
+	fmt.Println(mos) // {my mosh ganguly 90000 true}
+
+	// Anonymous struct
+	// In case of an anonymous struct, we do not define any derived struct type and we create a struct by defining the inline struct type and initial values of the struct fields in the same syntax.
+	monica := struct {
+		age     int
+		salary  int
+		teacher bool
+	}{
+		age: 12, salary: 12345, teacher: true,
+	}
+	// In the above program, we are creating a struct monica without defining a derived struct type. This is useful when you don’t want to re-use a struct type.
+	fmt.Println(monica) // {12 12345 true}
 
 
+	// DataStruct
+	samp1 := DataStruct{"Monday time", true}
+	fmt.Println(samp1) // {Monday time true}
+	samp1.bool = false
+	fmt.Println(samp1) // {Monday time false}
+	samp2 := DataStruct{"Sunday", false}
+	fmt.Println(samp2) // {Sunday false}
+	samp3 := samp1
+	fmt.Println(samp3) // {Monday time false}
 
+	// Nested Struct
+	// A struct field can be of any data type. Hence, it is perfectly legal to have a struct field that holds another struct.
+	// Hence, a struct field can have a data type that is a struct type. When a struct field has a struct value, that struct value is called a nested struct since it is nested inside a parent struct.
+
+	type UpdatedEmployee struct {
+		firstname string
+		lastname  string
+		salary    int
+		fulltime  bool
+		data      DataStruct
+	}
+	nestedstructMy := UpdatedEmployee{
+		firstname: "Rintu",
+		lastname:  "Ganguly",
+		salary:    58000,
+		fulltime:  true,
+		data:      DataStruct{"new data inserted", true},
+	}
+	fmt.Println(nestedstructMy)             // {Rintu Ganguly 58000 true {new data inserted true}}
+	fmt.Println(nestedstructMy.salary)      // 58000
+	fmt.Println(nestedstructMy.data.string) // new data inserted
+
+	var ms *myStruct
+	ms=new(myStruct) // alternate syntax: ms=&myStruct{foo:42}
+	(*ms).foo=42 // alternate syntax: ms.foo=42 // derefercencing
+	fmt.Println((*ms).foo) // alternate syntax: fmt.Println((*ms).foo)
+
+	// To export the field names of a struct, we’ve to follow the same uppercase letter approach.
+	// Two structs are comparable if they belong to the same type and have the same field values.
+
+}
+```
+#### OUTPUT
+```shell
+{  0 false}
+{Rupam Ganguly 45000 true}
+{Rintu Ganguly 58000 true}
+{my mosh ganguly 90000 true}
+{12 12345 true}
+&{Rintu Ganguly 58000 true}
+{Rintu Ganguly 58000 true}
+first name :  Rintu
+Rintu
+{Monday time true}
+{Monday time false}
+{Sunday false}
+{Monday time false}
+{Rintu Ganguly 58000 true {new data inserted true}}
+58000
+new data inserted
+42
+```
+
+## Pointer
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func passedasReferencee(a *int) { // d is passed
+	fmt.Println("*a is : ", *a)
+	fmt.Println("a is : ", a)
+	fmt.Println("address of a variable is: ", &a)
+	fmt.Println("Incrementing:")
+	*a++ // incrementing value - *a was 7 , now *a will be 8
+	fmt.Println("*a is : ", *a)
+	fmt.Println("a is : ", a)
+
+}
+
+func passedasvariable(a int) { // a is copy of c
+	fmt.Println("a is : ", a)
+	fmt.Println("address of a variable is: ", &a)
+	fmt.Println("Incrementing:")
+	a++ //a is incremented from 7 to 8
+	fmt.Println("a is : ", a)
+}
+
+
+func main() {
+	c := 7
+	fmt.Println("in main function address of c is : ", &c)
+	d := &c // d is memory address of c
+	fmt.Println("in main function d is : ", d)
+	fmt.Println("in main function *d is : ", *d)
+	fmt.Println("passedasReferencee called:--->")
+	passedasReferencee(d)
+	fmt.Println("after executing function :- ")
+	fmt.Println("c is : ", c)
+	fmt.Println("d is : ", d)
+	fmt.Println("*d is ", *d)
+	fmt.Println("passedasVariable called:--->")
+	passedasvariable(c) // here we passed c
+	fmt.Println("after executing function :- ")
+	fmt.Println("c is : ", c) // no change
+	fmt.Println("d is : ", d)
+}
+
+```
+#### 		OUTPUT:
+```shell
+	in main function address of c is :  0xc000012090
+	in main function d is :  0xc000012090
+	in main function *d is :  7
+	passedasReferencee called:--->       
+	*a is :  7
+	a is :  0xc000012090
+	address of a variable is:  0xc000006030
+	Incrementing:
+	*a is :  8
+	a is :  0xc000012090
+	after executing function :-
+	c is :  8
+	d is :  0xc000012090
+	*d is  8
+	passedasVariable called:--->
+	a is :  8
+	address of a variable is:  0xc000012098
+	Incrementing:
+	a is :  9
+	after executing function :-
+	c is :  8
+	d is :  0xc000012090
+```
+## Why-use-Pointer-in-code
+```go
+package main
+
+import "fmt"
+
+var packageLevelScopeVariable int = 12
+
+type Stack []string // the name of the array is Stack, type is string
+func noReciver() {
+	packageLevelScopeVariable++
+	fmt.Println("noReciever->", packageLevelScopeVariable)
+}
+func (Stack) withReciver() {
+	packageLevelScopeVariable++
+	fmt.Println("withReciver->", packageLevelScopeVariable)
+	//Stack = append(Stack, "one") // : type stack is not an expression
+	//fmt.Println(Stack) // : type stack is not an expression
+
+}
+func (s Stack) withReciverObject_1() {
+	packageLevelScopeVariable++
+	fmt.Println("withReciverObject_1->", packageLevelScopeVariable)
+	s = append(s, "two")
+	fmt.Println(s)
+	s = append(s, "three")
+	fmt.Println(s)
+}
+func (s Stack) withReciverObject_2() {
+	packageLevelScopeVariable++
+	fmt.Println("withReciverObject_2->", packageLevelScopeVariable)
+	s = append(s, "four")
+	fmt.Println(s)
+	s = append(s, "five")
+	fmt.Println(s)
+}
+func (s *Stack) withReciverPOINTERObject_1() {
+	packageLevelScopeVariable++
+	fmt.Println("withReciverPOINTERObject_1->", packageLevelScopeVariable)
+	*s = append(*s, "six")
+	fmt.Println(s)
+	*s = append(*s, "seven")
+	fmt.Println(*s)
+}
+func (s *Stack) withReciverPOINTERObject_2() {
+	packageLevelScopeVariable++
+	fmt.Println("withReciverPOINTERObject_2->", packageLevelScopeVariable)
+	*s = append(*s, "eight")
+	fmt.Println(s)
+	*s = append(*s, "nine")
+	fmt.Println(*s)
+}
+func main() {
+	noReciver()
+// noReciever-> 13
+	var st Stack
+	st.withReciver()
+// withReciver-> 14
+	st.withReciverObject_1()
+// withReciverObject_1-> 15
+// [two]
+// [two three]
+	st.withReciverObject_2()
+// withReciverObject_2-> 16
+// [four]
+// [four five]
+	st.withReciverPOINTERObject_1()
+// withReciverPOINTERObject_1-> 17
+// &[six]
+// [six seven]
+	st.withReciverPOINTERObject_2()
+// withReciverPOINTERObject_2-> 18
+// &[six seven eight]
+// [six seven eight nine]
+}
+
+
+```
+#### OUTPUT
+```shell
+noReciever-> 13
+withReciver-> 14
+withReciverObject_1-> 15
+[two]
+[two three]
+withReciverObject_2-> 16
+[four]
+[four five]
+withReciverPOINTERObject_1-> 17
+&[six]
+[six seven]
+withReciverPOINTERObject_2-> 18
+&[six seven eight]
+[six seven eight nine]
+```
+## Interface
+
+An interface is a collection of method signatures that a Type can implement (using methods). Hence interface defines (not declares) the behavior of the object (of the type Type). The primary job of an interface is to provide only method signatures consisting of the method name, input arguments and return types. 
+
+When an interface has zero methods, it is called an empty interface. This is represented by interface{}
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+// in order to successfully implemented an interface,
+// we need to implement all the methods declared by the interface with exact signature
+type Shape interface {
+	// just a struct or class with only some function declaration....
+	Area() float64
+	Perimeter() float64
+}
+type AnotherShape interface {
+	// just a struct or class with only some function declaration....
+	NewArea() string
+	NewPerimeter() float64
+}
+type Rect struct {
+	// this is a stuct with only some undefined variables
+	width, height float64
+}
+type Circle struct {
+	// this is a stuct with only some undefined variables
+	radius float64
+}
+
+
+// here(r Rect) says r is object of Rect class.. 
+// actually here, this is the synatax of defining a function outside of a struct
+// here we define Area function and Perimeter function of Shape Interfae inside Rect struct.. so that Rect class can implements Shape interface...
+// I know syntax is funny.. but its very powerful.. in this one line, compiler do lots of work
+func (r Rect) Area() float64 {
+	fmt.Println(r.width * r.height)
+	return 7
+}
+func (r Rect) Perimeter() float64 {
+	fmt.Println(2 * (r.width + r.height))
+	return 7
+}
+// Now Circle class also try to implements Shape interface 
+func (c Circle) Perimeter() float64 {
+	fmt.Println(2 * (math.Pi * c.radius))
+	return 7
+}
+func (c Circle) Area() float64 {
+	fmt.Println(math.Pi * c.radius * 2)
+	return 7
+}
+
+// Here Rect class again implements AnotherShape interface.. so Rect class implements 2 interfaces..
+func (r Rect) NewArea() string {
+	return "Implements multiple interfaces"
+}
+func (r Rect) NewPerimeter() float64 {
+	return 9874321
+}
+func main() {
+	var s Shape = Rect{10, 3}
+	s.Area() // 30
+	// multiple interface of Rect
+	var ns AnotherShape = Rect{5, 8}
+	fmt.Println(ns.NewArea())      // Implements multiple interfaces
+	fmt.Println(ns.NewPerimeter()) // 9.874321e+06
+	s = Circle{10}
+	s.Perimeter() // 62.83185307179586
+
+	//when Area() didnt implemented by c Circle then we get error:
+	//cannot use Circle literal (type Circle) as type Shape in assignment:
+	//Circle does not implement Shape (missing Area method)
+
+}
+```
+#### OUTPUT
+```shell
+30
+Implements multiple interfaces
+9.874321e+06
+62.83185307179586
+
+```
+Two interfaces can be compared with == and != operators. Two interfaces are always equal if the underlying dynamic values are nil, which means, two nil interfaces are always equal, hence == operation returns true.
+
+We can find out the underlying dynamic value of an interface using the syntax i.(Type) where i is a variable of type interface and Type is a type that implements the interface. Go will check if dynamic type of i is identical to the Type and return the dynamic value is possible.
+
+```go
+package main
+
+import "fmt"
+
+func explain(i interface{}) {
+	switch i.(type) { // we pass type of i in switch, accroding to the type cases are happen
+	case string:
+		fmt.Println(" Interface has a String")
+	case int:
+		fmt.Println("Interface has a Int")
+	default:
+		fmt.Println("Interface has other Type")
+	}
+}  
+func main() {
+	explain("Rupam Ganguly")
+	explain(45.987)
+	explain(43)
+}
+```
+#### OUTPUT
+```shell
+Interface has a String
+Interface has other Type
+Interface has a Int
+```
+## Mimic-of-Inheritance
+
+A key feature supporting traditional object oriented design is inheritance. Inheritance supports sharing of code and data, between related objects.  Inheritance means inheriting the properties of the superclass into the base class and is one of the most important concepts in Object-Oriented Programming. Since Golang does not support classes, so inheritance takes place through struct embedding. We cannot directly extend structs but rather use a concept called composition where the struct is used to form other objects. So, you can say there is No Inheritance Concept in Golang.
+composition relationship ["has a" relationship]
+In composition, base structs can be embedded into a child struct and the methods of the base/parent struct can be directly called on the child struct 
+Multiple inheritances take place when the child struct is able to access multiple properties, fields, and methods of more than one base struct. 
+
+```go
+// In GO we can use struct for inheritance, we can compose using structs to form other objects
+package main
+
+import "fmt"
+
+type ParentClass struct {
+	color      string
+	background string
+}
+
+// thats how we define function of ParentClass struct -outsude of the class/struct....
+func (ParentClass) basFuncOne() string {
+	return "I am Base Function ONE"
+}
+func (ParentClass) basFuncTwo() string {
+	return "I am Base Function TWO"
+}
+
+type ChildClass struct {
+	ParentClass
+	style    string
+	fontsize int
+}
+
+
+// thats how we define function of ChildClass outside class/struct
+func (c ChildClass) childFunc() string {
+	return "I am Child Function "
+}
+func main() {
+	// Patent object creation
+	baseObj := ParentClass{
+		color:      "Black",
+		background: "White",
+	}
+	// Child object creation
+	childObj := ChildClass{
+		ParentClass: baseObj,
+		style:       "bold",
+		fontsize:    32,
+	}
+	fmt.Println(childObj)    // {{Black White} bold 32}
+	childObj.color = "Green" // childObj can access color backgroud fields of Base STRUCT
+	childObj.background = "Red"
+	childObj.fontsize = 16
+	fmt.Println(childObj)              // {{Green Red} bold 16}
+	fmt.Println(childObj.basFuncOne()) // childObj can access basFunc Function of Base STRUCT
+	fmt.Println(childObj.basFuncTwo()) // I am Base Function ONE // I am Base Function TWO
+	fmt.Println(childObj.childFunc())
+}
+```
+#### OUTPUT
+```shell
+{{Black White} bold 32}
+{{Green Red} bold 16}
+I am Base Function ONE
+I am Base Function TWO
+I am Child Function 
+```
 ### ComandLine-Argument-Passing
 
 we can run go file with passing arguments to it, like: `go run demo.go 1234` here 1234 is the agument of int type.
@@ -313,3 +822,35 @@ PS E:\PROJECTS\BACKEND\gobackendcrud> go run demo.go 1234
 It's over 1234
 PS E:\PROJECTS\BACKEND\gobackendcrud> 
 ```
+## Allocation
+
+Go has two allocation primitives, the built-in functions new and make. new is a built-in function that allocates memory, but unlike its namesakes in some other languages it does not initialize the memory, it only zeros it. 
+That is, new(T) allocates zeroed storage for a new item of type T and returns its address, a value of type *T. 
+
+```go
+package main
+
+import "fmt"
+
+type myBox struct {
+	index int
+	data  int
+}
+
+func main() {
+	obj1 := new(myBox)
+	fmt.Println(obj1)  // &{0 0}
+	fmt.Println(*obj1) // {0 0}
+	var obj2 myBox
+	fmt.Println(obj2) // {0 0}
+	//fmt.Println(*obj2) // invalid indirect of obj2 (type myBox)
+}
+```
+#### OUTPUT
+```shell
+&{0 0}
+{0 0}
+{0 0}
+```
+The built-in function make(T, args) serves a purpose different from new(T). It creates slices, maps, and channels only, and it returns an initialized (not zeroed) value of type T (not *T). The reason for the distinction is that these three types represent, under the covers, references to data structures that must be initialized before use. Example of make function is present in Slice section...
+

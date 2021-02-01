@@ -2,7 +2,7 @@
 
 ### [ READ EVERY COMMENTS, THEN YOU WILL SURELY UNDERSTAND THE CONCEPTS ]
 ### [ I TRY TO MAKE IT WITH A SINGLE APPROACH, IS: AS FAST AS POSSIBLE TO LEARN GOLANG AND BACKEND DEVELOPMENT FROM A SINGLE RESOURCE ]
-
+### [If you get frustrated for horizontal scrolling of Code Blocks, Then Download the README.md file and open it by VS-Code then go to preferences -> settings -> on the editor: word wrap]
 ## Why-go-lang
 
 Backend development languages handle the ‘behind-the-scenes’ functionality of an applications. It’s code that connects the application to a database, manages user connections, and powers the application itself. Backend developers typically earn higher salaries than front-end developers, as backend languages tend to be more technical.

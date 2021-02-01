@@ -1212,7 +1212,7 @@ func (s *Stack) Push(item interface{}) {
 }
 
 ```
-<img src="ASSETS/stack1.png>
+<img src="ASSETS/stack1.png">
 
 ```go
 func (s *Stack) Pop() bool {
@@ -1225,7 +1225,7 @@ func (s *Stack) Pop() bool {
 }
 
 ```
-<img src="ASSETS/stack2.png>
+<img src="ASSETS/stack2.png">
 
 ## QUEUE
 
@@ -1249,9 +1249,9 @@ func (q *Queue) pop() {
 	}
 }
 ```
-<img src="ASSETS/queue1.png>
+<img src="ASSETS/queue1.png">
 
-<img src="ASSETS/queue2.png>
+<img src="ASSETS/queue2.png">
 
 
 ## Doubly-Linked-List
@@ -1286,7 +1286,7 @@ func (l *LinkedList) show() {
 	fmt.Println("-------------$$$$$$$$$$$$----------------")
 }
 ```
-<img src="ASSETS/linkedlist1.png>
+<img src="ASSETS/linkedlist1.png">
 
 
 
@@ -1318,7 +1318,7 @@ func (l *LinkedList) insertAt(item interface{}, index int) {
 	l.size++
 }
 ```
-<img src="ASSETS/linkedlist2.png>
+<img src="ASSETS/linkedlist2.png">
 
 ```go
 func (l *LinkedList) deleteAt(index int) {

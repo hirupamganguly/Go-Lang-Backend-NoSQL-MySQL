@@ -1190,12 +1190,13 @@ key:  41  Value:  I am value of key 41
 ```
 
 ## STACK
-```go
-// A stack is an ordered data structure that follows the Last-In-First-Out (LIFO) principle.
-//  Stacks are most easily implemented in Golang using slices:
+ A stack is an ordered data structure that follows the Last-In-First-Out (LIFO) principle.
+ Stacks are most easily implemented in Golang using slices:
+An element is pushed to the stack with the built-in append function.
+The element is popped from the stack by slicing off the top element.
 
-// An element is pushed to the stack with the built-in append function.
-// The element is popped from the stack by slicing off the top element.
+```go
+
 
 package main
 
@@ -1239,10 +1240,13 @@ func (q *Queue) pop() {
 }
 ```
 ## Doubly-Linked-List
+Linked list is a linear collection of data elements whose order is not given by their physical placement in memory. Instead, each element points to the next. It is a data structure consisting of a collection of nodes which together represent a sequence.
+In simple words, we can say, linked list is a collection of nodes. Node consists of two parts:
+ `Data`
+`Pointers-> next previous`
+<img src="https://miro.medium.com/max/3200/0*0XVK02Guco9xJMJL.png">
 ```go
-// In simple words, we can say, linked list is a collection of nodes. Node consists of two parts:
-// Data
-// Pointers- next previous
+
 package main
 
 import "fmt"

@@ -322,7 +322,8 @@ Struct gives one more ability to add meta-data to its fields. Usually, it is use
 	lastName  string `json:"lastName"`
 	salary    int    `json: "salary"`
 	fullTime  int    `json: "fullTime"`
-	```
+```
+Example
 
 ```go
 package main
@@ -1559,7 +1560,13 @@ func (bst *Bst) remove(keyy int) {
 	removeRecursively(keyy, bst.root)
 }
 
-
+func main() {
+	var b Bst
+	b.insert(12, "hi")
+	b.insert(2, "hi")
+	b.search(32)
+	b.remove(2)
+}
 
 ```
 

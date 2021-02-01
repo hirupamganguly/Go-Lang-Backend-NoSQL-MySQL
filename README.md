@@ -287,7 +287,7 @@ main.main()
 	/tmp/sandbox739186246/prog.go:48 +0x607
 
 ```
-## Struct-Class-of-GoLang
+## Struct
 
 A structure has different fields of the same or different data types.  Like a class, we can create an object from this Struct 
 ```go

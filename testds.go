@@ -143,19 +143,3 @@ func removeRecursively(keyy int, n *Node) *Node {
 func (bst *Bst) remove(keyy int) {
 	removeRecursively(keyy, bst.root)
 }
-func main() {
-	var b Bst
-	b.insert(12, "hi")
-	b.insert(2, "hi")
-	b.insert(21, "hi")
-	b.insert(32, "hi")
-	b.insert(42, "hi")
-	b.search(32)
-	b.search(92)
-	b.remove(21)
-	b.insert(3, "hi")
-	b.insert(27, "hi")
-	b.insert(107, "hi")
-	b.insert(31, "hi")
-	b.remove(32)
-}

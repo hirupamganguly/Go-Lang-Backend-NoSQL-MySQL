@@ -1190,6 +1190,8 @@ key:  41  Value:  I am value of key 41
 ```
 
 ## STACK
+
+
  A stack is an ordered data structure that follows the Last-In-First-Out (LIFO) principle.
  Stacks are most easily implemented in Golang using slices:
 An element is pushed to the stack with the built-in append function.
@@ -1208,6 +1210,11 @@ func (s *Stack) Push(item interface{}) {
 // func (s *Stack) Push(item string) {
 	*s = append(*s, item)
 }
+
+```
+<img src="ASSETS/stack1.png>
+
+```go
 func (s *Stack) Pop() bool {
 	if len(*s) != 0 {
 		index := len(*s) - 1
@@ -1216,7 +1223,10 @@ func (s *Stack) Pop() bool {
 	}
 	return false
 }
+
 ```
+<img src="ASSETS/stack2.png>
+
 ## QUEUE
 
 Queue follows a FIFO (First-In-First-Out) structure, the dequeue and enqueue operations can be performed as follows:
@@ -1239,6 +1249,11 @@ func (q *Queue) pop() {
 	}
 }
 ```
+<img src="ASSETS/queue1.png>
+
+<img src="ASSETS/queue2.png>
+
+
 ## Doubly-Linked-List
 Linked list is a linear collection of data elements whose order is not given by their physical placement in memory. Instead, each element points to the next. It is a data structure consisting of a collection of nodes which together represent a sequence.
 In simple words, we can say, linked list is a collection of nodes. Node consists of two parts:
@@ -1270,6 +1285,12 @@ func (l *LinkedList) show() {
 	}
 	fmt.Println("-------------$$$$$$$$$$$$----------------")
 }
+```
+<img src="ASSETS/linkedlist1.png>
+
+
+
+```go
 func (l *LinkedList) insertAt(item interface{}, index int) {
 	
 	node := &Node{
@@ -1296,7 +1317,10 @@ func (l *LinkedList) insertAt(item interface{}, index int) {
 	}
 	l.size++
 }
+```
+<img src="ASSETS/linkedlist2.png>
 
+```go
 func (l *LinkedList) deleteAt(index int) {
 	if index < l.size {
 		if index == 0 {
@@ -1357,7 +1381,7 @@ delete at 21
 
 
 
-
+## Backend-Development
 
 In this whole Note I will try to avoid error handeling as it is so easy that you just replace '_' to err
 then you have to add this if block :

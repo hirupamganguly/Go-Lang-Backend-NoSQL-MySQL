@@ -2,7 +2,7 @@
 
 ### [ READ EVERY COMMENTS, THEN YOU WILL SURELY UNDERSTAND THE CONCEPTS ]
 ### [ I TRY TO MAKE IT WITH A SINGLE APPROACH, IS: AS FAST AS POSSIBLE TO LEARN GOLANG AND BACKEND DEVELOPMENT FROM A SINGLE RESOURCE ]
-### [If you get frustrated for horizontal scrolling of Code Blocks, Then Download the README.md file and open it by VS-Code then go to preferences -> settings -> on the editor: word wrap]
+
 ## Why-go-lang
 
 Backend development languages handle the ‘behind-the-scenes’ functionality of an applications. It’s code that connects the application to a database, manages user connections, and powers the application itself. Backend developers typically earn higher salaries than front-end developers, as backend languages tend to be more technical.
@@ -72,13 +72,17 @@ func main() {
 
 // FOR loop TYPE 1
 
-    // Here for loop has 3 statements, First is initializer where k is initialized with 0 by shorthand construct :=,
-    // Second is condition(comaprison) where k<10 is tell the compiler that executes the body of the loop until k<10 is became false. When k becames 10 loop will terminate.
+	// Here for loop has 3 statements, First is initializer where k is 
+	//initialized with 0 by shorthand construct :=,
+	// Second is condition(comaprison) where k<10 is tell the compiler that 
+	//executes the body of the loop until k<10 is became false.
+	// When k becames 10 loop will terminate.
     // Third is increment/decrement which is responsible for make the condition part false at a time. 
 
 	for k:=0;k<10;k++{
 		if k%2==0{
-            continue // Continue statement at first break the execution of the block, then again start the block for execution.
+			continue // Continue statement at first break the execution of the block,
+			// then again start the block for execution.
             //skips the rest of the loop body and starts the next iteration.
 		}
 		fmt.Print(k) 
@@ -96,10 +100,14 @@ func main() {
 		}
 	} // 1:1 -> 1:2 -> 1:3 -> 2:1 -> 2:2 -> 3:1 -> 
 
-// Label is just refer a point, we want to point by the execution pointer, from where we want to start the execution.
+// Label is just refer a point, we want to point by the execution pointer,
+// from where we want to start the execution.
 
-// goto statement is used to alter the normal execution flow and transfer control to a labeld statement in the same program.
-// when goto statement is encountered, compiler transfer the control to a label: and start execution from there. But I personally dont prefer to use goto in programming.
+// goto statement is used to alter the normal execution flow and
+// transfer control to a labeld statement in the same program.
+// when goto statement is encountered, 
+// compiler transfer the control to a label: and start execution from there.
+// But I personally dont prefer to use goto in programming.
 
 MyLabel: 
 	for row:=1; row<=3;row++{
@@ -114,22 +122,26 @@ MyLabel:
 
 // FOR loop TYPE 2
 
-    // index variable contains index and value variable contains each charachter at a time of a string.
+	// index variable contains index and value variable contains
+	// each charachter at a time of a string.
 //  here characters are transformed to is ascii value so we need type casting.
 
     s:="Rupam Ganguly"
 	for index,value:=range s{
 		fmt.Print(index," :- ", value," -> ")
-	}// 0 :- 82 -> 1 :- 117 -> 2 :- 112 -> 3 :- 97 -> 4 :- 109 -> 5 :-  32 -> 6 :- 71 -> 7 :- 97 -> 8 :- 110 -> 9 :- 103 -> 10 :- 117 -> 11 :- 108 -> 12 :- 121 ->
+	}// 0 :- 82 -> 1 :- 117 -> 2 :- 112 -> 3 :- 97 -> 4 :- 109 -> 5 :-  32 -> 6 :- 71
+	// -> 7 :- 97 -> 8 :- 110 -> 9 :- 103 -> 10 :- 117 -> 11 :- 108 -> 12 :- 121 ->
 
 
 	s:="Rupam Ganguly"
 	for index,value:=range s{
 		fmt.Print(index," :- ", string(value)," -> ") // Convert or typecast from int to string
-    } // 0 :- R -> 1 :- u -> 2 :- p -> 3 :- a -> 4 :- m -> 5 :-   -> 6 :- G -> 7 :- a -> 8 :- n -> 9 :- g -> 10 :- u -> 11 :- l -> 12 :- y -> 
+	} // 0 :- R -> 1 :- u -> 2 :- p -> 3 :- a -> 4 :- m -> 5 :-   -> 6 :- G 
+	//-> 7 :- a -> 8 :- n -> 9 :- g -> 10 :- u -> 11 :- l -> 12 :- y -> 
     
 // FOR loop TYPE 3
-    // here initialization step is performed at package level , only condition step is present in for loop,
+	// here initialization step is performed at package level ,
+	// only condition step is present in for loop,
     // increment step performs from body of the for loop.
 
 	i:=1
@@ -201,7 +213,8 @@ func anotherFunc() {
 }
 
 // Function as value - Anonymous function
-// its nothing but just the name of the function is not present, and then we srore the return of the function, to a variable result.
+// its nothing but just the name of the function is not present, and 
+// then we srore the return of the function, to a variable result.
 // we can call it via `result(6, 9)`
 
 var result = func(a, b int) int {
@@ -214,13 +227,16 @@ var result = func(a, b int) int {
 	// 	return a - b
 	// }(89, 20)
 
-// now we can use only the variable name(subtra), as arguments(89,20) are passed at the time of definition 
+// now we can use only the variable name(subtra), as arguments(89,20)
+// are passed at the time of definition 
 
 
 
 func main() {
 	fmt.Println("Factorial of 4", factorial(4)) //Factorial of 4 24
-    defer anotherFunc()                         //defer keword in GO makes a function execute at the end of the execution (or when hits return statement) of parent function from where it is called.
+	defer anotherFunc()                         //defer keword in GO makes a function 
+	//execute at the end of the execution (or when hits return statement) of parent 
+	// function from where it is called.
 	
 	fmt.Println("HI I am MAIN and I execute first instead of defer function")
 	fmt.Println("HI I am MAIN and I execute first instead of defer function")
@@ -316,7 +332,9 @@ import (
 )
 
 // Anonymous fields
-// You can define a struct type without declaring any field names. You have to just define the field data types and Go will use the data type declarations (keywords) as the field names.
+// You can define a struct type without declaring any field names. You have to just 
+//define the field data types and Go will use the data type declarations (keywords) as
+// the field names.
 
 type DataStruct struct {
 	string
@@ -337,7 +355,8 @@ func main() {
 	var ross Employee
 	fmt.Println(ross) // {"" 0 false}
 	// The zero value of a struct is a struct with all fields set to their own zero values.
-	// Hence string will have zero value of ""(can’t be printed), int will have zero value of 0 and bool will have zero value of false.
+	// Hence string will have zero value of ""(can’t be printed), 
+	// int will have zero value of 0 and bool will have zero value of false.
 
 	// Initialized fields of a struct
 	ross.firstname = "Rupam"
@@ -352,7 +371,8 @@ func main() {
 		lastname:  "Ganguly",
 		salary:    58000,
 		fulltime:  true,
-		// The comma (,) is absolutely necessary after the value assignment of the last field while creating a struct using the above syntax.
+		// The comma (,) is absolutely necessary after the value assignment of the last 
+		// field while creating a struct using the above syntax.
 		// This way, Go won’t add a semicolon just after the last field while compiling the code.
 	}
 	fmt.Println(bos) // {Rintu Ganguly 58000 true}
@@ -362,7 +382,9 @@ func main() {
 	fmt.Println(mos) // {my mosh ganguly 90000 true}
 
 	// Anonymous struct
-	// In case of an anonymous struct, we do not define any derived struct type and we create a struct by defining the inline struct type and initial values of the struct fields in the same syntax.
+	// In case of an anonymous struct, we do not define any derived struct type and we 
+	//create a struct by defining the inline struct type and
+	//  initial values of the struct fields in the same syntax.
 	monica := struct {
 		age     int
 		salary  int
@@ -370,7 +392,8 @@ func main() {
 	}{
 		age: 12, salary: 12345, teacher: true,
 	}
-	// In the above program, we are creating a struct monica without defining a derived struct type. This is useful when you don’t want to re-use a struct type.
+	// In the above program, we are creating a struct monica without defining
+	// a derived struct type. This is useful when you don’t want to re-use a struct type.
 	fmt.Println(monica) // {12 12345 true}
 
 
@@ -385,8 +408,11 @@ func main() {
 	fmt.Println(samp3) // {Monday time false}
 
 	// Nested Struct
-	// A struct field can be of any data type. Hence, it is perfectly legal to have a struct field that holds another struct.
-	// Hence, a struct field can have a data type that is a struct type. When a struct field has a struct value, that struct value is called a nested struct since it is nested inside a parent struct.
+	// A struct field can be of any data type. Hence, it is perfectly legal to have a 
+	// struct field that holds another struct.
+	// Hence, a struct field can have a data type that is a struct type. When a struct 
+	//field has a struct value, that struct value is called a nested struct 
+	//  since it is nested inside a parent struct.
 
 	type UpdatedEmployee struct {
 		firstname string
@@ -643,7 +669,8 @@ type Circle struct {
 
 // here(r Rect) says r is object of Rect class.. 
 // actually here, this is the synatax of defining a function outside of a struct
-// here we define Area function and Perimeter function of Shape Interfae inside Rect struct.. so that Rect class can implements Shape interface...
+// here we define Area function and Perimeter function of Shape Interfae
+//   inside Rect struct.. so that Rect class can implements Shape interface...
 // I know syntax is funny.. but its very powerful.. in this one line, compiler do lots of work
 func (r Rect) Area() float64 {
 	fmt.Println(r.width * r.height)
@@ -1458,7 +1485,9 @@ HTML -
     <link href="styles/style.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
-    <!-- The preceding template has two placeholders, {{.Name}} and {{.Id}}, whose
+    <!-- The preceding template has two placeholders, {{.Name}} and {{.Id}},
+	
+	 whose
 values will be substituted or injected by the template engine at runtime. -->
 
     <h1>Hello {{.Name}} </h1>
@@ -1516,7 +1545,8 @@ func main() {
 	router := mux.NewRouter()
 	router.Handle("/", RenderTemplate).Methods("GET")
 	// 	PathPrefix adds a matcher for the URL path prefix. This matches if the given template is a prefix of the full URL path.
-	// Note that it does not treat slashes specially ("/foobar/" will be matched by the prefix "/foo") so you may want to use a trailing slash here.
+	// Note that it does not treat slashes specially ("/foobar/" will be matched by the 
+	//  prefix "/foo") so you may want to use a trailing slash here.
 	//When you specify a path using PathPrefix() it has an implicit wildcard at the end.
 	//On the other hand, when you specify a path using Path(), there's no such implied wildcard suffix.
 	router.PathPrefix("/styles/").Handler(http.StripPrefix("/styles/", http.FileServer(http.Dir("templates/styles/"))))// actually this is little complicated...
@@ -1753,7 +1783,8 @@ func fileUploader(res http.ResponseWriter, req *http.Request) {
 	//  inside the same directory with mode 666, which means the client can read
 	// and write but cannot execute the file.
 	defer out.Close()
-	io.Copy(out, file) //  Here we copy content from the file we received to the file we created inside the same directory.
+	io.Copy(out, file) //  Here we copy content from the file we received to the file
+	//   we created inside the same directory.
 	fmt.Fprintf(res, "file uploaded successfully "+header.Filename)
 
 }
@@ -1792,8 +1823,10 @@ import (
 	
 	//Unlike a language like Java (where there are only primitive and reference types),
 	//Go has types to represent textual, numeric, boolean, pointer, composite, function,
-	// and interface values. Once a variable is declared to be of a certain type, it can only carry values of that type.
-	//Package primitive contains types similar to Go primitives for BSON types can do not have direct Go primitive representations.
+	// and interface values. Once a variable is declared to be of a certain type, 
+	//  it can only carry values of that type.
+	//Package primitive contains types similar to Go primitives for BSON types
+	//   can do not have direct Go primitive representations.
 )
 
 // -----------DATA MODEL---------------
@@ -1824,7 +1857,8 @@ func getBooks(w http.ResponseWriter, r *http.Request) {
 	collection := client.Database("booksmanagement").Collection("books")
 	cursor, _ := collection.Find(ctx, bson.M{})
 	// The Cursor is a MongoDB Collection of the document which is returned upon the find method execution.
-	//By default, it is automatically executed as a loop. However, we can explicitly get specific index document from being returned cursor.
+	//By default, it is automatically executed as a loop. However, 
+	//  we can explicitly get specific index document from being returned cursor.
 	//It is just like a pointer which is pointing upon a specific index value.
 	// In simple words when we call a find method, all the documents which are returned are saved in a virtual cursor.
 
@@ -1841,7 +1875,9 @@ func getBook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var book Book
 	params := mux.Vars(r)                            // Vars returns the route variables for the current request, if any.
-	id, _ := primitive.ObjectIDFromHex(params["id"]) // ObjectIDFromHex creates a new ObjectID from a hex string. It returns an error if the hex string is not a valid ObjectID.
+	id, _ := primitive.ObjectIDFromHex(params["id"]) 
+	// ObjectIDFromHex creates a new ObjectID from a hex string.
+	//   It returns an error if the hex string is not a valid ObjectID.
 	collection := client.Database("booksmanagement").Collection("books")
 	collection.FindOne(ctx, Book{ID: id}).Decode(&book)
 	json.NewEncoder(w).Encode(book)
@@ -1898,7 +1934,9 @@ func deleteBook(w http.ResponseWriter, r *http.Request) {
 
 //-----x------HANDELER FUNCTIONS-------x--------
 
-var client *mongo.Client // Client is a handle representing a pool of connections to a MongoDB deployment. It is safe for concurrent use by multiple goroutines.
+var client *mongo.Client 
+// Client is a handle representing a pool of connections to a MongoDB deployment. 
+//  It is safe for concurrent use by multiple goroutines.
 // The Client type opens and closes connections automatically and maintains a pool of idle connections.
 // For connection pool configuration options, see documentation for the ClientOptions type in the mongo/options package.
 var err error
@@ -1928,7 +1966,8 @@ func main() {
 	//ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	err = client.Connect(ctx) // Connect initializes the Client by starting background monitoring goroutines. 
 	//If the Client was created using the NewClient function, this method must be called before a Client can be
-	// used.Connect starts background goroutines to monitor the state of the deployment and does not do any I/O in the main goroutine.
+	// used.Connect starts background goroutines to monitor the state of the deployment and
+	//  does not do any I/O in the main goroutine.
 	 //The Client.Ping method can be used to verify that the connection was created successfully.
 	if err != nil {
 		log.Fatal(err)
@@ -1936,7 +1975,8 @@ func main() {
 	defer client.Disconnect(ctx) // Disconnect closes sockets to the topology referenced by this Client.
 	// It will shut down any monitoring goroutines, close the idle connection pool, and will wait until all the in use
 	// connections have been returned to the connection pool and closed before returning. If the context expires via cancellation, 
-	//deadline, or timeout before the in use connections have returned, the in use connections will be closed, resulting in the failure
+	//deadline, or timeout before the in use connections have returned, 
+	//  the in use connections will be closed, resulting in the failure
 	// of any in flight read or write operations. If this method returns with no errors, all connections associated with this Client have been closed.
 	// ----x---mongo-atlas connection----x-------
 	// -------------GO-LOCALHOST SERVER CONNECTION----------------------

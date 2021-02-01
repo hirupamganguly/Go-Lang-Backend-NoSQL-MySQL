@@ -854,3 +854,22 @@ func main() {
 ```
 The built-in function make(T, args) serves a purpose different from new(T). It creates slices, maps, and channels only, and it returns an initialized (not zeroed) value of type T (not *T). The reason for the distinction is that these three types represent, under the covers, references to data structures that must be initialized before use. Example of make function is present in Slice section...
 
+pre, xmp, plaintext, listing {
+    white-space: pre;
+}
+.markdown-body pre > code {
+    white-space: pre;
+}
+.markdown-body code {
+    white-space: nowrap;
+}
+<pre><code>
+
+```go
+for i := 0; i < len(y); i++ {
+		fmt.Print(y[i]+x[i], " - ") // 1 - 2 - 15 - 4 - 5 - 129 - 7 - 8 - 9 - 0 - 0 - 0 -
+	}
+```
+
+ text text text text text text text text text text text text text text text text text text text text text 
+</code></pre>

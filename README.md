@@ -731,7 +731,8 @@ package main
 import "fmt"
 
 func explain(i interface{}) {
-	switch i.(type) { // we pass type of i in switch, accroding to the type cases are happen
+	switch i.(type) { 
+	// we pass type of i in switch, accroding to the type cases are happen
 	case string:
 		fmt.Println(" Interface has a String")
 	case int:
@@ -972,7 +973,8 @@ func main() {
 	sl := make([][]int, 12)
 	fmt.Println(sl) // [[] [] [] [] [] [] [] [] [] [] [] []]
 	for i := range sl {
-		fmt.Print(sl[i], " -> ") // [] -> [] -> [] -> [] -> [] -> [] -> [] -> [] -> [] -> [] -> [] -> [] ->
+		fmt.Print(sl[i], " -> ") 
+		// [] -> [] -> [] -> [] -> [] -> [] -> [] -> [] -> [] -> [] -> [] -> [] ->
 	}
 	fmt.Println()
 	slicef := [5][3]int{}
@@ -1062,7 +1064,8 @@ func main() {
 	// Maintain Order:
 	slicel = []string{"A", "B", "C", "D", "E", "F", "G"}
 	fmt.Println(slicel) // [A B C D E F G]
-	copy(slicel[i:], slicel[i+1:])//copy(to- slice[from 3rd index to last ] from- slice[from 4th index to Last ] )
+	copy(slicel[i:], slicel[i+1:])
+	//copy(to- slice[from 3rd index to last ] from- slice[from 4th index to Last ] )
 	fmt.Println(slicel) // [A B C E F G G]
 	slicel[len(slicel)-1] = ""
 	fmt.Println(slicel) // [A B C E F G ]
@@ -1117,12 +1120,14 @@ func main() {
 	myMap[17] = "I am value of key 17"
 	fmt.Println(myMap) // map[16:I am value of key 16 17:I am value of key 17]
 	myMap[21] = "I am value of key 21"
-	fmt.Println(myMap) // map[16:I am value of key 16 17:I am value of key 17 21:I am value of key 21]
+	fmt.Println(myMap) 
+	// map[16:I am value of key 16 17:I am value of key 17 21:I am value of key 21]
 	
 	val := myMap[17]
 	fmt.Println(val) // I am value of key 17
 
-	anotherVal, isPresent := myMap[12345] // another value store the value of the specific key if key is present
+	anotherVal, isPresent := myMap[12345] 
+	// another value store the value of the specific key if key is present
 	fmt.Println(anotherVal, "->", isPresent) // -> false
 	
 	
@@ -1874,7 +1879,7 @@ func getBooks(w http.ResponseWriter, r *http.Request) {
 func getBook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var book Book
-	params := mux.Vars(r)                            // Vars returns the route variables for the current request, if any.
+	params := mux.Vars(r)  // Vars returns the route variables for the current request, if any.
 	id, _ := primitive.ObjectIDFromHex(params["id"]) 
 	// ObjectIDFromHex creates a new ObjectID from a hex string.
 	//   It returns an error if the hex string is not a valid ObjectID.
@@ -1964,7 +1969,8 @@ func main() {
 		log.Fatal(err)
 	}
 	//ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	err = client.Connect(ctx) // Connect initializes the Client by starting background monitoring goroutines. 
+	err = client.Connect(ctx) 
+	// Connect initializes the Client by starting background monitoring goroutines. 
 	//If the Client was created using the NewClient function, this method must be called before a Client can be
 	// used.Connect starts background goroutines to monitor the state of the deployment and
 	//  does not do any I/O in the main goroutine.
@@ -1972,7 +1978,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer client.Disconnect(ctx) // Disconnect closes sockets to the topology referenced by this Client.
+	defer client.Disconnect(ctx)
+	 // Disconnect closes sockets to the topology referenced by this Client.
 	// It will shut down any monitoring goroutines, close the idle connection pool, and will wait until all the in use
 	// connections have been returned to the connection pool and closed before returning. If the context expires via cancellation, 
 	//deadline, or timeout before the in use connections have returned, 

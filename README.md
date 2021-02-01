@@ -1244,7 +1244,7 @@ Linked list is a linear collection of data elements whose order is not given by 
 In simple words, we can say, linked list is a collection of nodes. Node consists of two parts:
  `Data`
 `Pointers-> next previous`
-<img src="https://miro.medium.com/max/3200/0*0XVK02Guco9xJMJL.png">
+
 ```go
 
 package main

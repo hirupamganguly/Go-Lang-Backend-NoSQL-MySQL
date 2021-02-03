@@ -1416,6 +1416,8 @@ delete at 21
 ```go
 package main
 
+import "fmt"
+
 // Node ...
 type Node struct {
 	key  int
@@ -1560,16 +1562,143 @@ func (bst *Bst) remove(keyy int) {
 	removeRecursively(keyy, bst.root)
 }
 
+func (bst *Bst) smallest() {
+	n := bst.root
+	for {
+		if n.l != nil {
+			n = n.l
+		} else {
+			fmt.Println("Smallest item is: ", n.data, n.key)
+			break
+		}
+	}
+}
+func (bst *Bst) largest() {
+	n := bst.root
+	for {
+		if n.r != nil {
+			n = n.r
+		} else {
+			fmt.Println("largest item is: ", n.data, n.key)
+			break
+		}
+	}
+
+}
+
+type list struct {
+	items []Node
+}
+
+func (lst *list) push(item Node) {
+	lst.items = append(lst.items, item)
+}
+
+func (lst *list) popQueue() *Node {
+	if len(lst.items) == 0 {
+		return nil
+	}
+	temp := lst.items[0]
+	lst.items = lst.items[1:]
+	return &temp
+}
+
+func (bst *Bst) bfs() {
+	fmt.Print("BFS ")
+	if bst.root == nil {
+		return
+	}
+	var sq list
+	sq.push(*bst.root)
+	for {
+		if len(sq.items) == 0 {
+			fmt.Println("")
+			return
+		}
+
+		n := sq.popQueue()
+		fmt.Print(" -> ", n.key, " ", n.data)
+		if n.l != nil {
+			sq.push(*n.l)
+		}
+		if n.r != nil {
+			sq.push(*n.r)
+		}
+	}
+
+}
+
+func (lst *list) popStack() *Node {
+	if len(lst.items) == 0 {
+		return nil
+	}
+	temp := lst.items[len(lst.items)-1]
+	lst.items = lst.items[:len(lst.items)-1]
+	return &temp
+}
+
+func (bst *Bst) dfs() {
+	fmt.Print("DFS ")
+	if bst.root == nil {
+		return
+	}
+	var sq list
+	sq.push(*bst.root)
+	for {
+		if len(sq.items) == 0 {
+			fmt.Println("")
+			return
+		}
+
+		n := sq.popStack()
+		fmt.Print(" -> ", n.key, " ", n.data)
+		if n.l != nil {
+			sq.push(*n.l)
+		}
+		if n.r != nil {
+			sq.push(*n.r)
+		}
+	}
+
+}
+
 func main() {
 	var b Bst
 	b.insert(12, "hi")
 	b.insert(2, "hi")
-	b.search(32)
-	b.remove(2)
+	b.insert(21, "hi")
+	b.insert(32, "hi")
+	b.insert(42, "hi")
+	b.insert(3, "hi")
+	b.insert(27, "hi")
+	b.insert(107, "hi")
+	b.insert(31, "hi")
+	b.largest()
+	b.smallest()
+	b.bfs()
+	b.dfs()
+	b.remove(32)
+	fmt.Println("delete 32")
+	b.bfs()
+	b.remove(12)
+	fmt.Println("delete 12")
+	b.bfs()
+	b.dfs()
 }
 
 ```
+```shell
+largest item is:  hi 107
+Smallest item is:  hi 2
+BFS  -> 12 hi -> 2 hi -> 21 hi -> 3 hi -> 32 hi -> 27 hi -> 42 hi -> 31 hi -> 107 hi
+DFS  -> 12 hi -> 21 hi -> 32 hi -> 42 hi -> 107 hi -> 27 hi -> 31 hi -> 2 hi -> 3 hi
+delete 32
+BFS  -> 12 hi -> 2 hi -> 21 hi -> 3 hi -> 42 hi -> 27 hi -> 107 hi -> 31 hi
+delete 12
+BFS  -> 21 hi -> 2 hi -> 42 hi -> 3 hi -> 27 hi -> 107 hi -> 31 hi
+DFS  -> 21 hi -> 42 hi -> 107 hi -> 27 hi -> 31 hi -> 2 hi -> 3 hi
 
+```
 
 ## Backend-Development
 

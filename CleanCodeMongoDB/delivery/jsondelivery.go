@@ -6,8 +6,10 @@ import (
 	"../entity"
 )
 
+// Book ...
 type Book struct{}
 
+// Decode ...
 func (b *Book) Decode(input []byte) (*entity.Book, error) {
 	book := &entity.Book{}
 	if err := json.Unmarshal(input, book); err != nil {
@@ -15,6 +17,8 @@ func (b *Book) Decode(input []byte) (*entity.Book, error) {
 	}
 	return book, nil
 }
+
+// Encode ...
 func (b *Book) Encode(input *entity.Book) ([]byte, error) {
 	msz, err := json.Marshal(input)
 	if err != nil {

@@ -2385,3 +2385,8 @@ func main() {
 ```
 
 <img src="ASSETS/MysQlCRUDdemoVideo.gif">
+
+## Clean-code-architecture
+
+
+

@@ -1549,7 +1549,8 @@ func removeRecursively(keyy int, n *Node) *Node {
 		//then... replace with it
 		//as it has both child then replaced it with in order successor. then delete that inorder successor as
 		// it is still prsent at its position.
-		//Now the twist is as it is inorder successor so it can have right child or no chils, as it is left most of n.right.
+		//Now the twist is as it is inorder successor so it can have right child or no chils,
+		// as it is left most of n.right.
 		// Now again we call delete function by passing the inorder successor's key.
 		n.key, n.data = lmostOfRight.key, lmostOfRight.data
 		//then... delete it
@@ -1836,12 +1837,14 @@ var RenderTemplate = http.HandlerFunc(func(response http.ResponseWriter, request
 func main() {
 	router := mux.NewRouter()
 	router.Handle("/", RenderTemplate).Methods("GET")
-	// 	PathPrefix adds a matcher for the URL path prefix. This matches if the given template is a prefix of the full URL path.
+	// 	PathPrefix adds a matcher for the URL path prefix.
+	// This matches if the given template is a prefix of the full URL path.
 	// Note that it does not treat slashes specially ("/foobar/" will be matched by the 
 	//  prefix "/foo") so you may want to use a trailing slash here.
 	//When you specify a path using PathPrefix() it has an implicit wildcard at the end.
 	//On the other hand, when you specify a path using Path(), there's no such implied wildcard suffix.
-	router.PathPrefix("/styles/").Handler(http.StripPrefix("/styles/", http.FileServer(http.Dir("templates/styles/"))))// actually this is little complicated...
+	router.PathPrefix("/styles/").Handler(http.StripPrefix("/styles/", http.FileServer(http.Dir("templates/styles/"))))
+	// actually this is little complicated...
 	http.ListenAndServe("localhost:8080", router)
 }
 
@@ -2144,7 +2147,8 @@ func getBooks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	//Content types also known as MIME type or media types are a two part identifier for file formats.
 	// The HTTP header Content-Type is responsible for telling the HTTP client or server what type of data is being sent.
-	// To specify the content types of the request body and output, use the Content-Type and Accept headers. Indicates that the request body format is JSON.
+	// To specify the content types of the request body and output, use the Content-Type and Accept headers. 
+	//Indicates that the request body format is JSON.
 	var books []Book
 	collection := client.Database("booksmanagement").Collection("books")
 	cursor, _ := collection.Find(ctx, bson.M{})
@@ -2248,7 +2252,8 @@ func main() {
 
 	fmt.Println("Starting...")
 	// -------mongo-atlas connection-----------
-	// Client is a handle representing a pool of connections to a MongoDB deployment. It is safe for concurrent use by multiple goroutines.
+	// Client is a handle representing a pool of connections to a MongoDB deployment.
+	// It is safe for concurrent use by multiple goroutines.
 	// NewClient creates a new client to connect to a deployment specified by the uri.  This includes the ApplyURI method.
 	// The Client type opens and closes connections automatically and maintains a pool of idle connections.
 	client, err = mongo.NewClient(options.Client().ApplyURI("mongodb+srv://rupam:<password>@cluster0.cpwla.mongodb.net/<db-name>?retryWrites=true&w=majority"))
@@ -2268,10 +2273,12 @@ func main() {
 	defer client.Disconnect(ctx)
 	 // Disconnect closes sockets to the topology referenced by this Client.
 	// It will shut down any monitoring goroutines, close the idle connection pool, and will wait until all the in use
-	// connections have been returned to the connection pool and closed before returning. If the context expires via cancellation, 
+	// connections have been returned to the connection pool and closed before returning.
+	// If the context expires via cancellation, 
 	//deadline, or timeout before the in use connections have returned, 
 	//  the in use connections will be closed, resulting in the failure
-	// of any in flight read or write operations. If this method returns with no errors, all connections associated with this Client have been closed.
+	// of any in flight read or write operations. If this method returns with no errors,
+	// all connections associated with this Client have been closed.
 	// ----x---mongo-atlas connection----x-------
 	// -------------GO-LOCALHOST SERVER CONNECTION----------------------
 	http.ListenAndServe(":12345", router)
@@ -2388,5 +2395,9 @@ func main() {
 
 ## Clean-code-architecture
 
-// working on it...
+Sometime we really need to meet requirements and hit the deadlines. But even in this case we should keep our project at least well structured, readable and extendable.
+An architecture should not depend on frameworks, you should be able to swap a framework with the least effort.
+A software system’s core logic should not be affected by changes in UI, Databases, Frameworks, Libraries, etc.
+An inner layer should not know anything about upper/outer layers. As a result dependencies can only point inwards. In particular, the name of something declared in an outer circle must not be mentioned by the code in an inner circle. That includes, functions, classes. variables, or any other named software entity.
 
+You should always pay attention to objects being passed between layers. An object being passed should be isolated, simple or even just a plain data type without hidden dependencies. 

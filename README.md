@@ -2401,3 +2401,509 @@ A software system’s core logic should not be affected by changes in UI, Databa
 An inner layer should not know anything about upper/outer layers. As a result dependencies can only point inwards. In particular, the name of something declared in an outer circle must not be mentioned by the code in an inner circle. That includes, functions, classes. variables, or any other named software entity.
 
 You should always pay attention to objects being passed between layers. An object being passed should be isolated, simple or even just a plain data type without hidden dependencies. 
+
+
+### model.go
+
+```go
+
+package crudmicro
+
+import (
+	"context"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
+
+// User ...
+type User struct {
+	ID       primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+	Email    string             ` json:"email,omitempty" bson:"email,omitempty"`
+	Password string             ` json:"password,omitempty"  bson:"password,omitempty"`
+	Phone    string             ` json:"phone,omitempty"  bson:"phone,omitempty"`
+}
+
+// Repository ...
+type Repository interface {
+	CreateUser(ctx context.Context, user User) error
+	GetUserByID(ctx context.Context, id string) (interface{}, error)
+	GetAllUsers(ctx context.Context) (interface{}, error)
+	DeleteUser(ctx context.Context, id string) (string, error)
+	UpdateUser(ctx context.Context, id string, user User) error
+}
+```
+### service.go
+```go
+
+package crudmicro
+
+import (
+	"context"
+
+	"github.com/go-kit/kit/log"
+	"github.com/go-kit/kit/log/level"
+)
+
+// Declare the service interface and all the abstract methods inside it which you are going to
+//  implement in the service layer.
+// Service describes the User service.
+
+// UserService ...
+type UserService interface {
+	CreateUser(ctx context.Context, user User) (string, error)
+	GetUserByID(ctx context.Context, id string) (interface{}, error)
+	GetAllUsers(ctx context.Context) (interface{}, error)
+	DeleteUser(ctx context.Context, id string) (string, error)
+	UpdateUser(ctx context.Context, id string, user User) error
+}
+
+// Also write a service struct and NewService which are useful when you are interacting
+//  with the database through repository.
+// Then implement all the service methods.
+// NewService creates and returns a new User service instance
+
+type userserviceStruct struct {
+	repository Repository
+	logger     log.Logger // logger for logging middleware
+}
+
+// NewService ...
+func NewService(rep Repository, logger log.Logger) UserService {
+	return &userserviceStruct{
+		repository: rep,
+		logger:     logger,
+	}
+}
+
+// Create makes an user
+func (s userserviceStruct) CreateUser(ctx context.Context, user User) (string, error) {
+	// syntax: func With(logger Logger, keyvals ...interface{}) Logger
+	logger := log.With(s.logger, "method", "Create")
+	// Create a Version 4 UUID . NewV4 returns random generated UUID.
+	userDetails := User{
+		ID:       user.ID,
+		Email:    user.Email,
+		Password: user.Password,
+		Phone:    user.Phone,
+	}
+	if err := s.repository.CreateUser(ctx, userDetails); err != nil {
+		level.Error(logger).Log("err", err) // Error returns a logger that includes a Key/ErrorValue pair.
+	}
+	return userDetails.ID.String(), nil
+}
+
+func (s userserviceStruct) GetUserByID(ctx context.Context, id string) (interface{}, error) {
+	logger := log.With(s.logger, "method", "GetUserById")
+	var data interface{}
+	data, err := s.repository.GetUserByID(ctx, id)
+	if err != nil {
+		level.Error(logger).Log("err", err)
+
+		return "", err
+	}
+	return data, nil
+}
+
+func (s userserviceStruct) GetAllUsers(ctx context.Context) (interface{}, error) {
+	logger := log.With(s.logger, "method", "GetAllUsers")
+	var email interface{}
+	email, err := s.repository.GetAllUsers(ctx)
+	if err != nil {
+		level.Error(logger).Log("err", err)
+		return "", err
+	}
+	return email, nil
+}
+
+func (s userserviceStruct) DeleteUser(ctx context.Context, id string) (string, error) {
+	logger := log.With(s.logger, "method", "DeleteUser")
+	msg, err := s.repository.DeleteUser(ctx, id)
+	if err != nil {
+		level.Error(logger).Log("err", err)
+
+		return "", err
+	}
+	return msg, nil
+}
+
+func (s userserviceStruct) UpdateUser(ctx context.Context, id string, user User) error {
+	logger := log.With(s.logger, "method", "ChangeDetails")
+	// var email string
+	err := s.repository.UpdateUser(ctx, id, user)
+	if err != nil {
+		level.Error(logger).Log("err", err)
+		return err
+	}
+	return nil
+}
+
+```
+
+### transport.go
+
+```go
+
+package crudmicro
+
+import (
+	"context"
+	"encoding/json"
+	"net/http"
+
+	"github.com/gorilla/mux"
+)
+
+// The transport.go is responsible for converting a transport layer request into an endpoint call.
+
+type (
+	// CreateUserRequest ...
+	CreateUserRequest struct {
+		user User
+	}
+	// CreateUserResponse ...
+	CreateUserResponse struct {
+		ID  string `json:"id"`
+		Err error
+	}
+	// GetUserByIDRequest ...
+	GetUserByIDRequest struct {
+		ID string `json:"id"`
+	}
+	// GetUserByIDResponse ...
+	GetUserByIDResponse struct {
+		Data interface{} `json:"user"`
+		Err  error       `json:"error,omitempty"`
+	}
+	// GetAllUsersRequest ...
+	GetAllUsersRequest struct {
+	}
+	// GetAllUsersResponse ...
+	GetAllUsersResponse struct {
+		Data interface{} `json:"user"`
+		Err  error       `json:"error,omitempty"`
+	}
+	// DeleteUserRequest ...
+	DeleteUserRequest struct {
+		ID string `json:"id"`
+	}
+	// DeleteUserResponse ...
+	DeleteUserResponse struct {
+		Msg string `json:"msg,omitempty"`
+		Err error  `json:"error,omitempty"`
+	}
+	// UpdateUserRequest ...
+	UpdateUserRequest struct {
+		ID   string `json:"id"`
+		user User
+	}
+	// UpdateUserResponse ...
+	UpdateUserResponse struct {
+		Err error `json:"error,omitempty"`
+	}
+)
+
+func decodeCreateUserRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var req CreateUserRequest
+	if err := json.NewDecoder(r.Body).Decode(&req.user); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+func decodeGetUserByIDRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var req GetUserByIDRequest
+	vars := mux.Vars(r)
+	req = GetUserByIDRequest{
+		ID: vars["id"],
+	}
+
+	return req, nil
+}
+
+func decodeGetAllUsersRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var req GetAllUsersRequest
+
+	return req, nil
+}
+
+func decodeDeleteUserRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var req DeleteUserRequest
+	vars := mux.Vars(r)
+	req = DeleteUserRequest{
+		ID: vars["id"],
+	}
+
+	return req, nil
+}
+
+func decodeUpdateUserRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var req UpdateUserRequest
+	vars := mux.Vars(r)
+	req = UpdateUserRequest{
+		ID: vars["id"],
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req.user); err != nil {
+		return nil, err
+	}
+	return req, nil
+
+}
+
+//  encodes the output
+func encodeResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	return json.NewEncoder(w).Encode(response)
+}
+
+```
+
+endpoint.go
+
+```go
+
+package crudmicro
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/go-kit/kit/endpoint"
+)
+
+// Endpoints ...
+type Endpoints struct {
+	CreateUserEndpoint  endpoint.Endpoint
+	GetUserByIDEndpoint endpoint.Endpoint
+	GetAllUsersEndpoint endpoint.Endpoint
+	DeleteUserEndpoint  endpoint.Endpoint
+	UpdateUserEndpoint  endpoint.Endpoint
+}
+
+// // Endpoints have a simple definition. They take in a context and a request, and return a response and an error.
+
+// MakeCreateUserEndpoint ...
+func MakeCreateUserEndpoint(s UserService) endpoint.Endpoint {
+	fmt.Println("into makeendpoint")
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(CreateUserRequest)
+		id, err := s.CreateUser(ctx, req.user)
+		return CreateUserResponse{ID: id, Err: err}, nil
+	}
+
+}
+
+// MakeGetUserByIDEndpoint ...
+func MakeGetUserByIDEndpoint(s UserService) endpoint.Endpoint {
+	fmt.Println("into makeendpoint")
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(GetUserByIDRequest)
+		fmt.Println("Request", req)
+		id := req.ID
+		data, err := s.GetUserByID(ctx, id)
+		fmt.Println("ID decoded output:", data)
+		return GetUserByIDResponse{Data: data, Err: err}, nil
+	}
+
+}
+
+// MakeGetAllUsersEndpoint ...
+func MakeGetAllUsersEndpoint(s UserService) endpoint.Endpoint {
+	fmt.Println("into makeendpoint")
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+
+		data, err := s.GetAllUsers(ctx)
+		return GetAllUsersResponse{Data: data, Err: err}, nil
+	}
+
+}
+
+// MakeDeleteUserEndpoint ...
+func MakeDeleteUserEndpoint(s UserService) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(DeleteUserRequest)
+		fmt.Println("Request of DeleteUser", req)
+		fmt.Println("Rquest ud:", req.ID)
+		id := req.ID
+		msg, err := s.DeleteUser(ctx, id)
+		return DeleteUserResponse{Msg: msg, Err: err}, nil
+	}
+
+}
+
+// MakeUpdateUserEndpoint ...
+func MakeUpdateUserEndpoint(s UserService) endpoint.Endpoint {
+	fmt.Println("into makeendpoint")
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(UpdateUserRequest)
+		fmt.Println("Request", req.user)
+		rc := req.user
+		fmt.Println("Request Id", rc.ID)
+		fmt.Println("REQ.user:", req.user)
+		err := s.UpdateUser(ctx, rc.ID.String(), req.user)
+		return UpdateUserResponse{Err: err}, nil
+	}
+}
+
+```
+
+mongorepo.go
+
+```go
+
+package crudmicro
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/go-kit/kit/log"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
+)
+
+// UserCollection ...
+const UserCollection = "usercols"
+
+type repo struct {
+	// Client is a handle representing a pool of connections to a MongoDB deployment. It is safe for concurrent use by multiple goroutines.
+	// The Client type opens and closes connections automatically and maintains a pool of idle connections. For connection pool configuration options, see documentation for the ClientOptions type in the mongo/options package.
+
+	client *mongo.Client
+	logger log.Logger
+	err    error
+}
+
+// NewRepo ...
+func NewRepo(client *mongo.Client, logger log.Logger) (Repository, error) {
+	return &repo{
+		client: client,
+		logger: log.With(logger, "repo", "mongodb"),
+	}, nil
+}
+
+// --------THE Repository contract is present inside model.go--------
+
+func (repo *repo) CreateUser(ctx context.Context, user User) error {
+	collection := repo.client.Database("usermanagement").Collection(UserCollection)
+	_, err := collection.InsertOne(ctx, user)
+	if err != nil {
+		fmt.Println("Error occured inside CREATE USER in REPO")
+		return err
+	}
+	fmt.Println("User Created:", user.Email)
+	return nil
+}
+func (repo *repo) GetUserByID(ctx context.Context, id string) (interface{}, error) {
+	collection := repo.client.Database("usermanagement").Collection(UserCollection)
+	data := User{}
+	nid, _ := primitive.ObjectIDFromHex(id)
+	collection.FindOne(ctx, User{ID: nid}).Decode(&data)
+	return data, nil
+}
+
+func (repo *repo) GetAllUsers(ctx context.Context) (interface{}, error) {
+	var users []User
+	collection := repo.client.Database("usermanagement").Collection(UserCollection)
+	cursor, _ := collection.Find(ctx, bson.M{})
+	defer cursor.Close(ctx)
+	for cursor.Next(ctx) { // The cursor.Next() method is used to return the next document in a cursor.
+		var user User
+		cursor.Decode(&user)
+		users = append(users, user)
+	}
+	return users, nil
+}
+func (repo *repo) DeleteUser(ctx context.Context, id string) (string, error) {
+	collection := repo.client.Database("usermanagement").Collection(UserCollection)
+	nid, _ := primitive.ObjectIDFromHex(id)
+	collection.DeleteOne(ctx, User{ID: nid})
+	return "deleted successfully", nil
+}
+
+func (repo *repo) UpdateUser(ctx context.Context, id string, user User) error {
+	collection := repo.client.Database("usermanagement").Collection(UserCollection)
+	nid, _ := primitive.ObjectIDFromHex(id)
+	upd := bson.D{
+		{"$set", bson.D{
+			{"email", user.Email},
+			{"password", user.Password},
+			{"phone", user.Phone},
+		}},
+	}
+
+	collection.FindOneAndUpdate(ctx, User{ID: nid}, upd).Decode(&user)
+
+	return nil
+}
+
+```
+
+main.go
+
+```go
+
+package main
+
+import (
+	"context"
+	"time"
+
+	"flag"
+	"fmt"
+	"net/http"
+	"os"
+	"os/signal"
+	"projects/mymicroservice/crudmicro"
+	"syscall"
+
+	"github.com/go-kit/kit/log"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+)
+
+func main() {
+	logger := log.NewLogfmtLogger(os.Stderr)
+	var hA = flag.String("http", ":8080", "http listen address")
+	flag.Parse()
+	ctx := context.Background()
+
+	var ctxmongo, _ = context.WithTimeout(context.Background(), 1560*time.Second)
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://rupamganguly:MN1ntlrWNap8l4lZ@cluster0.cpwla.mongodb.net/usermanagement?retryWrites=true&w=majority"))
+	if err != nil {
+		fmt.Println(err)
+	}
+	err = client.Connect(ctxmongo)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer client.Disconnect(ctxmongo)
+
+	repository, err := crudmicro.NewRepo(client, logger)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	sr := crudmicro.NewService(repository, logger)
+	erChan := make(chan error)
+	go func() {
+		c := make(chan os.Signal, 1)
+		signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
+		erChan <- fmt.Errorf("%s", <-c)
+	}()
+	endpoints := crudmicro.Endpoints{
+		CreateUserEndpoint:  crudmicro.MakeCreateUserEndpoint(sr),
+		GetUserByIDEndpoint: crudmicro.MakeGetUserByIDEndpoint(sr),
+		GetAllUsersEndpoint: crudmicro.MakeGetAllUsersEndpoint(sr),
+		DeleteUserEndpoint:  crudmicro.MakeDeleteUserEndpoint(sr),
+		UpdateUserEndpoint:  crudmicro.MakeUpdateUserEndpoint(sr),
+	}
+	go func() {
+		fmt.Println("crudmicro is listening on port: ", *hA)
+		handler := crudmicro.NewHTTPServer(ctx, endpoints)
+		erChan <- http.ListenAndServe(*hA, handler)
+	}()
+	fmt.Println(<-erChan)
+}
+```

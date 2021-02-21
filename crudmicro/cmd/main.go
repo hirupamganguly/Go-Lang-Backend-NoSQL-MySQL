@@ -24,7 +24,7 @@ func main() {
 	ctx := context.Background()
 
 	var ctxmongo, _ = context.WithTimeout(context.Background(), 1560*time.Second)
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://rupamganguly:MN1ntlrWNap8l4lZ@cluster0.cpwla.mongodb.net/usermanagement?retryWrites=true&w=majority"))
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://rupamganguly:<password>@cluster0.cpwla.mongodb.net/usermanagement?retryWrites=true&w=majority"))
 	if err != nil {
 		fmt.Println(err)
 	}

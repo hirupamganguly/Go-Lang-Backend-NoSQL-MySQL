@@ -24,3 +24,6 @@ func NewHTTPServer(ctx context.Context, endpoints Endpoints) http.Handler {
 	r.Methods("PUT").Path("/updateuser/{id}").Handler(ht.NewServer(endpoints.UpdateUserEndpoint, decodeUpdateUserRequest, encodeResponse))
 	return r
 }
+
+// Handlers are responsible for writing response headers and bodies. Almost any object can be a handler, so long as it satisfies the http.Handler interface. In lay terms, that simply means it must have a ServeHTTP method with the following signature:
+// ServeHTTP(http.ResponseWriter, *http.Request)

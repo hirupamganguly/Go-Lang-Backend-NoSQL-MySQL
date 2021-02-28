@@ -14,7 +14,6 @@ func NewHTTPServer(ctx context.Context, endpoints Endpoints) http.Handler {
 	r.Use(commonMiddleware)
 	r.Methods("GET").Path("/status").Handler(ht.NewServer(endpoints.StatusEndpoint, decodeStatusReq, encodeRes))
 	r.Methods("GET").Path("/get").Handler(ht.NewServer(endpoints.GetDataEndpoint, decodeGetDataReq, encodeRes))
-	r.Methods("POST").Path("/validate").Handler(ht.NewServer(endpoints.ValidateDataEndpoint, decodeValidateDataReq, encodeRes))
 	return r
 }
 

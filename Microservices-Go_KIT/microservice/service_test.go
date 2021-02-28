@@ -24,22 +24,6 @@ func TestGetData(t *testing.T) {
 	}
 }
 
-func TestValidateData(t *testing.T) {
-	srv, ctx := setup()
-	st, _ := srv.ValidateData(ctx, "19/02/2021")
-	if !st {
-		t.Errorf("date should be valid")
-	}
-	st, _ = srv.ValidateData(ctx, "02/19/2021")
-	if st {
-		t.Errorf("date should be invalid")
-	}
-	st, _ = srv.ValidateData(ctx, "32/42/2021")
-	if st {
-		t.Errorf("date should be inavalid")
-	}
-}
-
 func setup() (srv Service, ctx context.Context) {
 	return NewService(), context.Background()
 }

@@ -42,7 +42,6 @@ func NewService(rep Repository, logger log.Logger) UserService {
 func (s userserviceStruct) CreateUser(ctx context.Context, user User) (string, error) {
 	// syntax: func With(logger Logger, keyvals ...interface{}) Logger
 	logger := log.With(s.logger, "method", "Create")
-	// Create a Version 4 UUID . NewV4 returns random generated UUID.
 	userDetails := User{
 		ID:       user.ID,
 		Email:    user.Email,

@@ -2425,6 +2425,10 @@ func main() {
 
 # Microservice
 
+<img src="ASSETS\UntitledDiagram.png">
+
+<img src="ASSETS\structure.PNG">
+
 model.go
 
 <img src="ASSETS\model.png">
@@ -2962,7 +2966,19 @@ func main() {
 
 
 <img src="ASSETS\UntitledDiagram.png">
+
+example of UPADTE:-
+
 <img src="ASSETS\update.PNG">
+
+BEFORE UPADTE:
+
 <img src="ASSETS\mongo.PNG">
+
+AFTER UPDATE:
+
 <img src="ASSETS\mongo-sfter-update.PNG">
+
+DEBUG of UPDATE:---
+
 <img src="ASSETS\vvideomodel.PNG">

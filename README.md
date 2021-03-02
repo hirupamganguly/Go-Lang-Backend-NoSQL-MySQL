@@ -2427,6 +2427,8 @@ func main() {
 
 model.go
 
+<img src="ASSETS\model.png">
+
 ```go
 package videomicro
 
@@ -2487,6 +2489,8 @@ type Repository interface {
 ```
 
 service.go
+
+<img src="ASSETS\service.png">
 
 ```go
 package videomicro
@@ -2576,6 +2580,8 @@ func (vs videoServiceStruct) DeleteService(ctx context.Context, id string) (stri
 ```
 
 transport.go
+
+<img src="ASSETS\transport.png">
 
 ```go
 
@@ -2674,6 +2680,8 @@ func encodeResponse(_ context.Context, rw http.ResponseWriter, response interfac
 
 endpoints.go
 
+<img src="ASSETS\endpoints.png">
+
 ```go
 
 package videomicro
@@ -2734,6 +2742,8 @@ func MakeDeleteEndpoint(s VideoService) endpoint.Endpoint {
 
 ```
 mongorepository.go
+
+<img src="ASSETS\mongorepository.png">
 
 ```go
 package videomicro
@@ -2829,6 +2839,8 @@ func (repo *repo) Update(ctx context.Context, id string, videomodel VideoModel) 
 
 server.go
 
+<img src="ASSETS\server.png">
+
 ```go
 
 package videomicro
@@ -2863,6 +2875,8 @@ func NewHTTPServer(ctx context.Context, endpoints Endpoints) http.Handler {
 ```
 
 main.go
+
+<img src="ASSETS\main.png">
 
 ```go
 
@@ -2943,6 +2957,9 @@ func main() {
 }
 
 ```
+
+
+
 
 <img src="ASSETS\UntitledDiagram.png">
 <img src="ASSETS\update.PNG">

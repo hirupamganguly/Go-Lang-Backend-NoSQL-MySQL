@@ -2876,7 +2876,7 @@ func NewHTTPServer(ctx context.Context, endpoints Endpoints) http.Handler {
 
 main.go
 
-<img src="ASSETS\main.png">
+<img src="ASSETS\main.go.png">
 
 ```go
 

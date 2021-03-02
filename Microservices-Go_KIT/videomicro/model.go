@@ -42,3 +42,13 @@ type Repository interface {
 	Update(ctx context.Context, id string, videomodel VideoModel) (string, error)
 	Delete(ctx context.Context, id string) (string, error)
 }
+
+// ## business logic
+//  The business logic in the services contain core business logic, which should not have any knowledge of endpoint or concrete transports like HTTP or gRPC, or encoding and decoding of request and response message types. This will encourage you follow a clean architecture for the Go kit based services
+//  Each service method converts as an endpoint by using an adapter and exposed by using concrete transports.
+
+//   ## endpoint
+//   In Go kit, the primary messaging pattern is RPC. An endpoint represents a single RPC method. Each service method in a Go kit service converts to an endpoint to make RPC style communication between servers and clients. Each endpoint exposes the service method to outside world using Transport layer by using concrete transports like HTTP or gRPC. A single endpoint can be exposed by using multiple transports.
+
+//   ## transport layer
+//   The transport layer in Go kit is bound to concrete transports. Go kit supports various transports for serving services using HTTP, gRPC, NATS, AMQP and Thrift. Because Go kit services are just focused on implementing business logic and don’t have any knowledge about concrete transports, you can provide multiple transports for a same service.

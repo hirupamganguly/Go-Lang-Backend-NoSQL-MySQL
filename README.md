@@ -2421,3 +2421,531 @@ func main() {
 ```
 
 <img src="ASSETS/MysQlCRUDdemoVideo.gif">
+
+
+# Microservice
+
+model.go
+
+```go
+package videomicro
+
+import (
+	"context"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
+
+// VideoDataModel ...
+type VideoDataModel struct {
+	VideoID        string `json:"video_id" bson:"video_id"`
+	VideoTitle     string `json:"video_title" bson:"video_title"`
+	VideoThumbnail string `json:"video_thumbnail" bson:"video_thumbnail"`
+	VideoType      string `json:"video_type" bson:"video_type"`
+	Like           int    `json:"like" bson:"like"`
+}
+
+// CollectionModel ...
+type CollectionModel struct {
+	CollectionID   string           `json:"collection_id" bson:"collection_id"`
+	CollectionName string           `json:"collection_name" bson:"collection_name"`
+	NosOfVideo     int              `json:"nos_of_video" bson:"nos_of_video"`
+	Video          []VideoDataModel `json:"video" bson:"video"`
+}
+
+// Data ...
+type Data struct {
+	Data []CollectionModel `json:"collection" bson:"collection"`
+}
+
+// VideoModel ...
+type VideoModel struct {
+	ID      primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+	Success bool               `json:"success" bson:"success"`
+	Data    Data               `json:"data" bson:"data"`
+}
+
+// Repository ...
+type Repository interface {
+	Create(ctx context.Context, videomodel VideoModel) (interface{}, error)
+	Get(ctx context.Context) (interface{}, error)
+	Update(ctx context.Context, id string, videomodel VideoModel) (string, error)
+	Delete(ctx context.Context, id string) (string, error)
+}
+
+// ## business logic
+//  The business logic in the services contain core business logic, which should not have any knowledge of endpoint or concrete transports like HTTP or gRPC, or encoding and decoding of request and response message types. This will encourage you follow a clean architecture for the Go kit based services
+//  Each service method converts as an endpoint by using an adapter and exposed by using concrete transports.
+
+//   ## endpoint
+//   In Go kit, the primary messaging pattern is RPC. An endpoint represents a single RPC method. Each service method in a Go kit service converts to an endpoint to make RPC style communication between servers and clients. Each endpoint exposes the service method to outside world using Transport layer by using concrete transports like HTTP or gRPC. A single endpoint can be exposed by using multiple transports.
+
+//   ## transport layer
+//   The transport layer in Go kit is bound to concrete transports. Go kit supports various transports for serving services using HTTP, gRPC, NATS, AMQP and Thrift. Because Go kit services are just focused on implementing business logic and don’t have any knowledge about concrete transports, you can provide multiple transports for a same service.
+
+
+```
+
+service.go
+
+```go
+package videomicro
+
+import (
+	"context"
+
+	"github.com/go-kit/kit/log"
+	"github.com/go-kit/kit/log/level"
+)
+
+// // Declare the service interface and all the abstract methods inside it which you are going to
+//  implement in the service layer.
+
+// VideoService ...
+type VideoService interface {
+	CreateService(ctx context.Context, videomodel VideoModel) (string, error)
+	GetService(ctx context.Context) (interface{}, error)
+	UpdateService(ctx context.Context, id string, videomodel VideoModel) (string, error)
+	DeleteService(ctx context.Context, id string) (string, error)
+}
+
+// // Also write a service struct and NewService which are useful when you are interacting
+//  with the database through repository.
+// Then implement all the service methods.
+
+type videoServiceStruct struct {
+	repository Repository
+	logger     log.Logger
+}
+
+// NewService creates and returns a new User service instance
+
+// NewService ...
+func NewService(rep Repository, logger log.Logger) VideoService {
+	return &videoServiceStruct{
+		repository: rep,
+		logger:     logger,
+	}
+}
+
+func (vs videoServiceStruct) CreateService(ctx context.Context, videomodel VideoModel) (string, error) {
+	logger := log.With(vs.logger, "method", "CreateService")
+	videoDetails := VideoModel{
+		Success: videomodel.Success,
+		Data:    videomodel.Data,
+	}
+	if _, err := vs.repository.Create(ctx, videoDetails); err != nil {
+		level.Error(logger).Log("err", err)
+	}
+	return "Done", nil
+}
+
+func (vs videoServiceStruct) GetService(ctx context.Context) (interface{}, error) {
+	logger := log.With(vs.logger, "method", "GetService")
+	var srv interface{}
+	srv, err := vs.repository.Get(ctx)
+	if err != nil {
+		level.Error(logger).Log("err", err)
+		return "", err
+	}
+	return srv, nil
+}
+
+func (vs videoServiceStruct) UpdateService(ctx context.Context, id string, videomodel VideoModel) (string, error) {
+
+	logger := log.With(vs.logger, "method", "UpdateService")
+	_, err := vs.repository.Update(ctx, id, videomodel)
+	if err != nil {
+		level.Error(logger).Log("err", err)
+		return "", err
+	}
+	return "done", nil
+}
+
+func (vs videoServiceStruct) DeleteService(ctx context.Context, id string) (string, error) {
+	logger := log.With(vs.logger, "method", "DeleteService")
+	_, err := vs.repository.Delete(ctx, id)
+	if err != nil {
+		level.Error(logger).Log("err", err)
+		return "", err
+	}
+	return "Done", nil
+}
+
+
+```
+
+transport.go
+
+```go
+
+package videomicro
+
+import (
+	"context"
+	"encoding/json"
+	"net/http"
+
+	"github.com/gorilla/mux"
+)
+
+// // The transport.go is responsible for converting a transport layer request into an endpoint call.
+
+// CreateRequest ...
+type CreateRequest struct {
+	v VideoModel
+}
+
+// CreateResponse ..,
+type CreateResponse struct {
+	Msg string `json:"msg"`
+	Err error
+}
+
+// GetRequest ...
+type GetRequest struct {
+}
+
+// GetResponse ...
+type GetResponse struct {
+	Data interface{} `json:"video"`
+	Err  error       `json:"error,omitempty"`
+}
+
+// UpdateRequest ...
+type UpdateRequest struct {
+	ID string `json:"id"`
+	v  VideoModel
+}
+
+// UpdateResponse ...
+type UpdateResponse struct {
+	Msg string `json:"msg,omitempty"`
+	Err error  `json:"error,omitempty"`
+}
+
+// DeleteRequest ...
+type DeleteRequest struct {
+	ID string `json:"id"`
+}
+
+// DeleteResponse ...
+type DeleteResponse struct {
+	Msg string `json:"msg,omitempty"`
+	Err error  `json:"error,omitempty"`
+}
+
+func decodeCreateRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var req CreateRequest
+	if err := json.NewDecoder(r.Body).Decode(&req.v); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+func decodeGetRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var req GetRequest
+	return req, nil
+}
+func decodeUpdateRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var req UpdateRequest
+	vars := mux.Vars(r)
+	req = UpdateRequest{
+		ID: vars["id"],
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req.v); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+func decodeDeleteRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var req DeleteRequest
+	vars := mux.Vars(r)
+	req = DeleteRequest{
+		ID: vars["id"],
+	}
+	return req, nil
+}
+func encodeResponse(_ context.Context, rw http.ResponseWriter, response interface{}) error {
+	rw.Header().Set("Content-Type", "application/json; charset=utf-8")
+	return json.NewEncoder(rw).Encode(response)
+}
+
+```
+
+endpoints.go
+
+```go
+
+package videomicro
+
+import (
+	"context"
+
+	"github.com/go-kit/kit/endpoint"
+)
+
+// // Endpoints have a simple definition. They take in a context and a request, and return a response and an error.
+
+// Endpoints ...
+type Endpoints struct {
+	CreateEndpoint endpoint.Endpoint
+	GetEndpoint    endpoint.Endpoint
+	UpdateEndpoint endpoint.Endpoint
+	DeleteEndpoint endpoint.Endpoint
+}
+
+// MakeCreateEndpoint ...
+func MakeCreateEndpoint(s VideoService) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(CreateRequest)
+		msg, err := s.CreateService(ctx, req.v)
+		return CreateResponse{Msg: msg, Err: err}, nil
+	}
+}
+
+// MakeGetEndpoint ...
+func MakeGetEndpoint(s VideoService) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		data, err := s.GetService(ctx)
+		return GetResponse{Data: data, Err: err}, nil
+	}
+}
+
+// MakeUpdateEndpoint ...
+func MakeUpdateEndpoint(s VideoService) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(UpdateRequest)
+		_, err := s.UpdateService(ctx, req.ID, req.v)
+		return UpdateResponse{Err: err}, nil
+
+	}
+}
+
+// MakeDeleteEndpoint ...
+func MakeDeleteEndpoint(s VideoService) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(DeleteRequest)
+		id := req.ID
+		_, err := s.DeleteService(ctx, id)
+		return UpdateResponse{Err: err}, nil
+	}
+}
+
+
+```
+mongorepository.go
+
+```go
+package videomicro
+
+import (
+	"context"
+	"fmt"
+	"strconv"
+
+	"github.com/go-kit/kit/log"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
+)
+
+// VideoCollection ...
+const VideoCollection = "videocols"
+
+// // Client is a handle representing a pool of connections to a MongoDB deployment. It is safe for concurrent use by multiple goroutines.
+// The Client type opens and closes connections automatically and maintains a pool of idle connections. For connection pool configuration options, see documentation for the ClientOptions type in the mongo/options package.
+
+type repo struct {
+	client *mongo.Client
+	logger log.Logger
+	err    error
+}
+
+// NewRepo ...
+func NewRepo(client *mongo.Client, logger log.Logger) (Repository, error) {
+	return &repo{
+		client: client,
+		logger: log.With(logger, "repo", "mongodb"),
+	}, nil
+}
+
+// --------THE Repository contract is present inside model.go--------
+
+func (repo *repo) Create(ctx context.Context, videomodel VideoModel) (interface{}, error) {
+	collection := repo.client.Database("usermanagement").Collection(VideoCollection)
+	result, err := collection.InsertOne(ctx, videomodel)
+	if err != nil {
+		return "", err
+	}
+	return result, nil
+}
+
+func (repo *repo) Get(ctx context.Context) (interface{}, error) {
+	var v []VideoModel
+	collection := repo.client.Database("usermanagement").Collection(VideoCollection)
+	cursor, _ := collection.Find(ctx, bson.M{}) // The cursor.Next() method is used to return the next document in a cursor.
+	defer cursor.Close(ctx)
+	for cursor.Next(ctx) {
+		var vm VideoModel
+		cursor.Decode(&vm)
+		v = append(v, vm)
+	}
+	return v, nil
+}
+
+func (repo *repo) Delete(ctx context.Context, id string) (string, error) {
+	collection := repo.client.Database("usermanagement").Collection(VideoCollection)
+	nid, _ := primitive.ObjectIDFromHex(id)
+	filter := bson.M{"_id": nid}
+	fmt.Println(filter)
+	// d, err := collection.DeleteOne(ctx, VideoModel{ID: nid})
+	d, err := collection.DeleteOne(ctx, filter)
+	if err != nil {
+		return "", err
+	}
+
+	return strconv.Itoa(int(d.DeletedCount)), nil
+}
+
+func (repo *repo) Update(ctx context.Context, id string, videomodel VideoModel) (string, error) {
+	collection := repo.client.Database("usermanagement").Collection(VideoCollection)
+	nid, _ := primitive.ObjectIDFromHex(id)
+	filter := bson.M{"_id": nid}
+	upd := bson.D{
+		{"$set", bson.D{
+			{"success", videomodel.Success},
+			{"data", videomodel.Data},
+		}},
+	}
+	err := collection.FindOneAndUpdate(ctx, filter, upd).Decode(&videomodel)
+	if err != nil {
+		return "", err
+	}
+	return "Done", nil
+}
+
+
+```
+
+server.go
+
+```go
+
+package videomicro
+
+import (
+	"context"
+	"net/http"
+
+	ht "github.com/go-kit/kit/transport/http"
+	"github.com/gorilla/mux"
+)
+
+// // Handlers are responsible for writing response headers and bodies. Almost any object can be a handler, so long as it satisfies the http.Handler interface. In lay terms, that simply means it must have a ServeHTTP method with the following signature:
+// ServeHTTP(http.ResponseWriter, *http.Request)
+
+// NewHTTPServer ...
+func NewHTTPServer(ctx context.Context, endpoints Endpoints) http.Handler {
+	r := mux.NewRouter()
+
+	r.Methods("POST").Path("/v/create").Handler(ht.NewServer(endpoints.CreateEndpoint, decodeCreateRequest, encodeResponse))
+
+	r.Methods("GET").Path("/v/get").Handler(ht.NewServer(endpoints.GetEndpoint, decodeGetRequest, encodeResponse))
+
+	r.Methods("PUT").Path("/v/update/{id}").Handler(ht.NewServer(endpoints.UpdateEndpoint, decodeUpdateRequest, encodeResponse))
+
+	r.Methods("DELETE").Path("/v/delete/{id}").Handler(ht.NewServer(endpoints.DeleteEndpoint, decodeDeleteRequest, encodeResponse))
+
+	return r
+}
+
+
+```
+
+main.go
+
+```go
+
+package main
+
+import (
+	"context"
+	"flag"
+	"fmt"
+	"net/http"
+	"os"
+	"os/signal"
+	"projects/mymicroservice/videomicro"
+
+	"syscall"
+	"time"
+
+	"github.com/go-kit/kit/log"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+)
+
+//
+// we might want a server to gracefully shutdown when it receives a SIGTERM, or a command-line tool to stop processing input if it receives a SIGINT.
+
+// Go signal notification works by sending os.Signal values on a channel. We’ll create a channel to receive these notifications (we’ll also make one to notify us when the program can exit).
+
+// signal.Notify registers the given channel to receive notifications of the specified signals.
+
+// When we run this program it will block waiting for a signal. By typing ctrl-C (which the terminal shows as ^C) we can send a SIGINT signal, causing the program to print interrupt and then exit.
+
+func main() {
+	logger := log.NewLogfmtLogger(os.Stderr)
+	var hA = flag.String("http", ":8080", "http listen address")
+	flag.Parse()
+	ctx := context.Background()
+
+	var ctxMongo, _ = context.WithTimeout(context.Background(), 1560*time.Second)
+
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://rupamganguly:MN1ntlrWNap8l4lZ@cluster0.cpwla.mongodb.net/usermanagement?retryWrites=true&w=majority"))
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	err = client.Connect(ctxMongo)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer client.Disconnect(ctxMongo)
+
+	repository, err := videomicro.NewRepo(client, logger)
+	if err != nil {
+		fmt.Print(err)
+	}
+	sr := videomicro.NewService(repository, logger)
+	erChan := make(chan error)
+	go func() {
+		c := make(chan os.Signal, 1)
+		signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
+		erChan <- fmt.Errorf("%s", <-c)
+	}()
+
+	endpoints := videomicro.Endpoints{
+		CreateEndpoint: videomicro.MakeCreateEndpoint(sr),
+		GetEndpoint:    videomicro.MakeGetEndpoint(sr),
+		UpdateEndpoint: videomicro.MakeUpdateEndpoint(sr),
+		DeleteEndpoint: videomicro.MakeDeleteEndpoint(sr),
+	}
+
+	go func() {
+		fmt.Println("CRUD IS LISTENING ON PORT", *hA)
+		handler := videomicro.NewHTTPServer(ctx, endpoints)
+
+		erChan <- http.ListenAndServe(*hA, handler)
+
+	}()
+	fmt.Println(<-erChan)
+}
+
+```
+
+<img src="ASSETS\UntitledDiagram.png">
+<img src="ASSETS\update.PNG">
+<img src="ASSETS\mongo.PNG">
+<img src="ASSETS\mongo-sfter-update.PNG">
+<img src="ASSETS\vvideomodel.PNG">

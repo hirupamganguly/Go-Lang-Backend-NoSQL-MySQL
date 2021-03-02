@@ -8,6 +8,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// // The transport.go is responsible for converting a transport layer request into an endpoint call.
+
 // CreateRequest ...
 type CreateRequest struct {
 	v VideoModel

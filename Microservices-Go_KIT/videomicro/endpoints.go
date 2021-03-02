@@ -6,6 +6,8 @@ import (
 	"github.com/go-kit/kit/endpoint"
 )
 
+// // Endpoints have a simple definition. They take in a context and a request, and return a response and an error.
+
 // Endpoints ...
 type Endpoints struct {
 	CreateEndpoint endpoint.Endpoint

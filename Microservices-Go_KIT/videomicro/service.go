@@ -7,6 +7,9 @@ import (
 	"github.com/go-kit/kit/log/level"
 )
 
+// // Declare the service interface and all the abstract methods inside it which you are going to
+//  implement in the service layer.
+
 // VideoService ...
 type VideoService interface {
 	CreateService(ctx context.Context, videomodel VideoModel) (string, error)
@@ -14,10 +17,17 @@ type VideoService interface {
 	UpdateService(ctx context.Context, id string, videomodel VideoModel) (string, error)
 	DeleteService(ctx context.Context, id string) (string, error)
 }
+
+// // Also write a service struct and NewService which are useful when you are interacting
+//  with the database through repository.
+// Then implement all the service methods.
+
 type videoServiceStruct struct {
 	repository Repository
 	logger     log.Logger
 }
+
+// NewService creates and returns a new User service instance
 
 // NewService ...
 func NewService(rep Repository, logger log.Logger) VideoService {

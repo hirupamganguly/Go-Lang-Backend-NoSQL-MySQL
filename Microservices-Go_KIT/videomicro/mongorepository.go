@@ -14,6 +14,9 @@ import (
 // VideoCollection ...
 const VideoCollection = "videocols"
 
+// // Client is a handle representing a pool of connections to a MongoDB deployment. It is safe for concurrent use by multiple goroutines.
+// The Client type opens and closes connections automatically and maintains a pool of idle connections. For connection pool configuration options, see documentation for the ClientOptions type in the mongo/options package.
+
 type repo struct {
 	client *mongo.Client
 	logger log.Logger
@@ -28,6 +31,8 @@ func NewRepo(client *mongo.Client, logger log.Logger) (Repository, error) {
 	}, nil
 }
 
+// --------THE Repository contract is present inside model.go--------
+
 func (repo *repo) Create(ctx context.Context, videomodel VideoModel) (interface{}, error) {
 	collection := repo.client.Database("usermanagement").Collection(VideoCollection)
 	result, err := collection.InsertOne(ctx, videomodel)
@@ -40,7 +45,7 @@ func (repo *repo) Create(ctx context.Context, videomodel VideoModel) (interface{
 func (repo *repo) Get(ctx context.Context) (interface{}, error) {
 	var v []VideoModel
 	collection := repo.client.Database("usermanagement").Collection(VideoCollection)
-	cursor, _ := collection.Find(ctx, bson.M{})
+	cursor, _ := collection.Find(ctx, bson.M{}) // The cursor.Next() method is used to return the next document in a cursor.
 	defer cursor.Close(ctx)
 	for cursor.Next(ctx) {
 		var vm VideoModel
